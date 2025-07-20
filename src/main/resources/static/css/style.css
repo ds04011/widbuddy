@@ -29,7 +29,7 @@ footer {
   background-color: #f9f9f9; /* 배경색 (선택사항) */
   width: 400px;
   max-width: 100%;       /* 폼 너비 제한 */
-  height : 500px;
+  
 }
 
 .loginborder .form-control {

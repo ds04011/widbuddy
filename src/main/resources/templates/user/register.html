@@ -11,15 +11,21 @@
         	<div class="d-flex align-items-center justify-content-center">
 	        	<div class="loginborder">
 	        		<h3 class="text-center">회원가입</h3>
-	        		<form id="loginForm">
+	        		
 	        			
-	        			<label>이메일</label><input type="text" class="form-control" placeholder="이메일을 입력해주세요." >
-	        			<label>비밀번호</label><input type ="password" class="form-control" placeholder="비밀번호를 입력해주세요">
-	        			<label>비밀번호 확인</label><input type ="password" class="form-control" placeholder="비밀번호를 확인해주세요">
-	        			<label>닉네임</label><input type ="text" class="form-control" placeholder="닉네임을 입력해주세요">
-	        			<button type="submit" class="btn btn-info btn-block mt-4">회원가입</button> 
+	        			<label>이메일</label><input type="text" class="form-control" id="emailInput" placeholder="이메일을 입력해주세요." >
+	        			<div class="d-flex justify-content-end">
+	        				<button type="button" class="btn btn-secondary mt-1 btn-sm col-4" id="emailDup">중복체크</button>
+	        			</div>
+	        			<label>비밀번호</label><input type ="password" class="form-control" id="passwordInput" placeholder="비밀번호를 입력해주세요">
+	        			<label>비밀번호 확인</label><input type ="password" class="form-control" id="passwordCheck" placeholder="비밀번호를 확인해주세요">
+	        			<label>닉네임</label><input type ="text" class="form-control" id="nicknameInput" placeholder="닉네임을 입력해주세요">
+	        			<div class="d-flex justify-content-end">
+	        				<button type="button" class="btn btn-secondary mt-1 btn-sm col-4" id="nicknameDup">중복체크</button>
+	        			</div>
+	        			<button type="button" class="btn btn-info btn-block mt-4" id="registerBtn">회원가입</button> 
 	        			
-	        		</form>
+	        		
 	        		<!-- 
 	        		<div class="d-flex justify-content-between my-4">
 	        			<button type="" class="btn btn-secondary col-5 mt-3" >간편 로그인</button>
@@ -37,18 +43,125 @@
 
 
 	<script layout:fragment="script">
-	
+		var nicknameDupCheck = false;
+		var emailDupCheck = false;
+		
+		// 입력 내용이 바뀌면, 중복 체크 기준을 다시 잡아야 함. 
+		// input 이벤트를 기반으로 입력내용 변경시 중복체크를 다시 하도록 해야함. 
+		$("#nicknameInput").on("input", function(){
+			// 중복확인 과정 초기화 
+			nicknameDupCheck = false;
+		});
+		
+		
+		$("#emailInput").on("input", function(){
+			// 중복확인 과정 초기화 
+			emailDupCheck = false;
+		});	
+		
+		
+		$("#emailDup").on("click", function(){
+			let email = $("#emailInput").val();
+			
+			$.ajax({
+				type:"get"
+				, url:"/user/email/duplicate"
+				, data:{"email":email}
+				, success:function(response){
+					if(response.result){
+						alert("이미 사용중인 이메일 입니다.");
+					} else {
+						emailDupCheck = true;
+						alert("사용가능한 이메일입니다.");
+					}
+				}
+				, error:function(){
+					alert("이메일 중복 체크 중 에러 발생");
+				}
+			});
+		});
+		
+		
+		
+		$("#nicknameDup").on("click", function(){
+			let nickname = $("#nicknameInput").val();
+			
+			$.ajax({
+				type:"get"
+				, url:"/user/nickname/duplicate"
+				, data:{"nickname":nickname}
+				, success:function(response){
+					if(response.result){
+						alert("이미 사용중인 닉네임 입니다.");
+					} else {
+						nicknameDupCheck = true;
+						alert("사용가능한 닉네임입니다.");
+					}
+				}
+				, error:function(){
+					alert("닉네임 중복 체크 중 에러 발생");
+				}
+			});
+		});
+		
+		$("#registerBtn").on("click", function(){
+			let email = $("#emailInput").val();
+			let password = $("#passwordInput").val();
+			let passwordCheck = $("#passwordCheck").val();
+			let nickname = $("#nicknameInput").val();
+			
+			if(email==""){
+				alert("이메일을 입력하세요");
+				return;
+			}
+			if(password==""){
+				alert("비밀번호를 입력하세요");
+				return;
+			}
+			if(passwordCheck==""){
+				alert("비밀번호 확인 창에 입력하세요");
+				return;
+			}
+			if(nickname==""){
+				alert("닉네임을 입력하세요");
+				return;
+			}
+			if(password != passwordCheck){
+				alert("비밀번호가 일치하지 않습니다. ");
+				return;
+			}
+			if(!nicknameDupCheck){
+				alert("닉네임 중복 체크를 진행해주세요.");
+				return;
+			}
+			if(!emailDupCheck){
+				alert("이메일 중복 체크를 진행해주세요.");
+				return;
+			}
+			
+			$.ajax({
+				type:"post"
+				, url:"/user/register"
+				, data:{"email":email, "password":password, "nickname":nickname}
+				, success:function(response){
+					if(response.result == "success"){
+						alert("회원가입 완료");
+						location.href="/user/view/login";
+						
+					} else {
+						alert("회원가입 실패");
+					}	
+				}
+				, error:function(){
+					alert("회원가입 중 에러 발생");
+				}
+			});
+		});
+		
 	
 	
 	
 	</script>
-
-
-
-
-
-
-
 
 
 

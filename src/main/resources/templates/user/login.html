@@ -13,9 +13,9 @@
 		        	<h3 class="text-center">로그인</h3>
 	        		<form id="loginForm">
 	        			
-	        			<label>이메일</label><input type="text" class="form-control" placeholder="이메일을 입력해주세요." >
-	        			<label>비밀번호</label><input type ="password" class="form-control" placeholder="비밀번호를 입력해주세요">
-	        			<button type="submit" class="btn btn-info btn-block mt-4">로그인</button> 
+	        			<label>이메일</label><input type="text" class="form-control" id="emailInput" placeholder="이메일을 입력해주세요." >
+	        			<label>비밀번호</label><input type ="password" class="form-control" id="passwordInput" placeholder="비밀번호를 입력해주세요">
+	        			<button type="submit" class="btn btn-info btn-block mt-4" >로그인</button> 
 	        			
 	        		</form>
 	        		<div class="d-flex justify-content-between my-4">
@@ -31,7 +31,40 @@
         
 
 	<script layout:fragment="script">
-	
+		$("#loginForm").on("submit", function(e){
+			e.preventDefault(); 
+			
+			let email = $("#emailInput").val();
+			let password = $("#passwordInput").val();
+			
+			if(email==""){
+				alert("이메일을 입력해주세요.");
+				return;
+			}
+			if(password ==""){
+				alert("비밀번호를 입력해주세요.");
+				return;
+			}
+			
+			
+			$.ajax({
+				type:"post"
+				, url:"/user/login"
+				, data:{"email":email, "password":password}
+				, success:function(response){
+					if(response.result=="success"){
+						//alert("!");
+						location.href="/post/view/mainpage";
+					} else {
+						alert("이메일과 비밀번호를 확인해주세요.");
+					}
+				}
+				, error:function(){
+					alert("로그인 과정 중 에러");
+				}
+			});
+			
+		});
 	
 	
 	
