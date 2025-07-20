@@ -1,6 +1,8 @@
 spring:
   config:
     import: security-variables.yml
+  mvc: 
+    static-path-pattern: /static/** 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url : jdbc:mysql://localhost:3306/widbuddy_ds04011

@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+
+#wrap {
+	
+	width : 1200px;
+	margin : 0 auto;
+}
+
+header {
+	height : 100px;
+	
+}
+
+
+footer {
+	height : 100px;
+}
+
+.contents {
+	height : 800px;
+	
+}
+
+.loginborder {
+  border: 1px solid #ccc; /* 외곽선 */
+  padding: 30px;          /* 내부 여백 */
+  border-radius: 10px;    /* 모서리 둥글게 */
+  background-color: #f9f9f9; /* 배경색 (선택사항) */
+  width: 400px;
+  max-width: 100%;       /* 폼 너비 제한 */
+  height : 500px;
+}
+
+.loginborder .form-control {
+  margin-bottom: 15px;    /* 인풋 사이 간격 */
+}
+
+.loginborder .btn-block {
+  margin-top: 10px;
+}
+
+.loginborder .btn-secondary {
+  width: 48%;             /* 버튼 너비 조절 */
+}
