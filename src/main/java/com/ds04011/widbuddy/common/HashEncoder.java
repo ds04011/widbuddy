@@ -9,7 +9,12 @@ public class HashEncoder {
 	public static String encoder(String message) {
 		try {
 			MessageDigest messageDigest = MessageDigest.getInstance("sha256");
-									// md5 대신 sha256 으로 하면 32 자리에서 64자리 까지 인코딩 가능 
+									// md5 대신 sha256 으로 하면 32 자리에서 64자리 까지 인코딩 가능
+			
+			// sha256 도 요즘은 잘 안씀
+			// salt, bcrypt, 가 조금더     자릿수에 따라 DB 테이블 수정해야하니까. 처음부터 
+			
+			
 			byte[] bytes = message.getBytes();  
 			messageDigest.update(bytes);
 			byte[] digest = messageDigest.digest();
@@ -28,5 +33,7 @@ public class HashEncoder {
 			return null;  // md5 라는 알고리즘이 없을때, 변환안된거니까, null 리턴으로 문제있음을 알림
 		}
 	}
-
+	
+	
+	 
 }

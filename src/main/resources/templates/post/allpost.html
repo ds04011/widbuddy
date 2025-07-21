@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" 
+    xmlns:th="http://www.thymeleaf.org" 
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/mainpagedefault}">
+        
+        
+        <section layout:fragment="contents">
+        	<!--  모든 글을 불러와서 테이블 형식으로 나열할건데, 
+        			한 페이지에 글을 몇개 띄울건지 정하고, 페이지네이션을 하자,
+        	 -->
+        	
+        	<div>
+        		<h4 class="text-center mt-5 ">전체 글 리스트</h4>
+        		<table class="table text-center p-2">
+        			<thead>
+        				<tr>
+        					<th>게시글 no.</th>
+        					<th>작성자</th>
+        					<th>제목</th>
+        					<th>카테고리</th>
+        					<th>생성시간</th>
+        					<th>모집 시행시 깃발아이콘</th>
+        				</tr>
+        			</thead>
+        			<tbody>
+	        			<tr>
+	        				<td>1.</td>
+	        				<td>ds04011</td>
+	        				<td>테스트제목</td>
+	        				<td>등산</td>
+	        				<td>11.11.11</td>
+	        				<td>모집시행시, 깃발아이콘 + 숫자</td>
+	        			</tr>
+	        			<tr>
+	        				<td>1.</td>
+	        				<td>ds04011</td>
+	        				<td>테스트제목</td>
+	        				<td>등산</td>
+	        				<td>11.11.11</td>
+	        				<td>모집시행시, 깃발아이콘 + 숫자</td>
+	        			</tr>
+	        			<tr>
+	        				<td>1.</td>
+	        				<td>ds04011</td>
+	        				<td>테스트제목</td>
+	        				<td>등산</td>
+	        				<td>11.11.11</td>
+	        				<td>모집시행시, 깃발아이콘 + 숫자</td>
+	        			</tr>
+	        			<tr>
+	        				<td>1.</td>
+	        				<td>ds04011</td>
+	        				<td>테스트제목</td>
+	        				<td>등산</td>
+	        				<td>11.11.11</td>
+	        				<td>모집시행시, 깃발아이콘 + 숫자</td>
+	        			</tr>
+        			</tbody>
+        		</table>
+        	
+        	</div>
+        
+        
+        
+        
+        
+        </section>
+        
+        
+        
+        <script layout:fragment="script">
+        
+        </script>
+        
+</html>

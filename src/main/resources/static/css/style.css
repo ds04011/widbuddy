@@ -43,3 +43,27 @@ footer {
 .loginborder .btn-secondary {
   width: 48%;             /* 버튼 너비 조절 */
 }
+
+.hashtag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; /* 해시태그 사이 여백 */
+}
+
+.hashtag-container span {
+  background-color: #f0f0f0;
+  padding: 6px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.prbg{
+	background-color: #7D85DD;
+}
+.navbg{
+	background-color: #B1B6F0;
+}
+.footerbg{
+	background-color: #CCCACA;
+}

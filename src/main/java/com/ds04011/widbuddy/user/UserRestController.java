@@ -85,5 +85,17 @@ public class UserRestController {
 		}
 		return resultMap;
 	}
+	
+	@GetMapping("/user/logout")
+	public String logout(HttpServletRequest request) {
+		HttpSession session =  request.getSession();
+		
+		session.removeAttribute("userId");
+		session.removeAttribute("nickname");
+		
+		return "redirect:/user/view/login";
+		
+		
+	}
 
 }
