@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" 
+    xmlns:th="http://www.thymeleaf.org" 
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/mainpagedefault}">
+        
+        
+        <section layout:fragment="contents">
+        <!--  카테고리 생성하는 페이지. -->
+        <form>
+       		  <div class="mt-5 mb-3 ">
+			    <label class="text-center">카테고리 이름</label>
+			    <input type="text"   class="form-control" id="nameInput"
+			           maxlength="16" placeholder="16글자 제한" >
+			  </div>
+			
+			  <div class="mb-3">
+			    <label class="text-center">카테고리 설명</label>
+			    <textarea   class="form-control" id="descriptionInput"
+			              rows="2" maxlength="64" placeholder="카테고리의 간략한 설명을 해주세요."></textarea>
+			  </div>
+			
+			  <button type="submit" id="createBtn" class="btn btn-primary  mb-5">생성하기</button>
+			   
+        
+        </form>
+        
+        </section>
+        
+        
+        
+        <script layout:fragment="script">
+        	
+        	$("#createBtn").on("click", function(){
+        		let name = $("#nameInput").val();
+        		let description = $("#descriptionInput").val();
+        		
+        		$.ajax({
+        			type:"post"
+        			, url:"/category/create"
+        			, data:{"name":name, "description":description}
+        			, success:function(response){
+        				if(response.result=="success"){
+        					location.href="/category/view/allcategory";
+        					// 사실 모든 카테고리 보기 페이지가아니라, 방금생성한 카테고리페이지로 가야함.
+        					// 구현 생각 해보자. 
+        				} else {
+        					alert("카테고리 생성 실패");
+        				}
+       				}
+        			, error:function(){
+        				alert("카테고리 생성 중 에러 발생");
+        			}
+        		});
+        	});
+        
+        
+        
+        </script>
+        
+</html>

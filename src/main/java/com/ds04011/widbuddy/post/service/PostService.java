@@ -1,5 +1,7 @@
 package com.ds04011.widbuddy.post.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.ds04011.widbuddy.post.domain.Post;
@@ -32,6 +34,16 @@ public class PostService {
 		}
 		
 		return true;
+	}
+	
+	public List<Post> getAllPost(){
+		return postRepository.findAll();
+	}
+	
+	public List<Post> getPostByCategoryId(long categoryId){
+		List<Post> postList =  postRepository.findAllByCategoryId(categoryId);
+		
+		return postList;
 	}
 
 }

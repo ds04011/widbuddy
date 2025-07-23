@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko" 
+    xmlns:th="http://www.thymeleaf.org" 
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/mainpagedefault}">
+        
+        
+        <section layout:fragment="contents">
+        <!--  모든 카테고리 가져와서 테이블 형식으로 보여주기, 
+        여기에 카테고리 생성 버튼 있는데,  세션정보 userId 없으면 안보여, 
+        
+         -->
+         	<div>
+         		<div class="d-flex justify-content-between">
+       				<h5 class="mt-4 ml-4">카테고리 리스트</h5>
+       				<a th:if="${session.userId != null}" class="btn btn-sm btn-secondary mt-4" href="/category/view/create">카테고리 추가</a>
+
+       				
+       			</div>
+       			<table class="table text-center p-2 mt-2">
+       				<!--  카테고리 정보를 가져와서 테이블 형식으로 보여주고, 
+       					각 카테고리 row 마다 클릭할 수 있게 해야하는데,  -->
+        			<thead>
+        				<tr>
+        					<th>카테고리 no.</th>
+        					<th>생성자</th>
+        					<th>카테고리 이름</th>
+        					<th>카테고리 설명</th>
+        					<th>생성시간</th>
+        					<th> 관심 버튼 </th>
+        					<th>총 모집중인 인원 수</th>
+        				</tr>
+        			</thead>
+        			<tbody>
+	        			<tr>
+	        				<td>1.</td>
+	        				<td>ds04011</td>
+	        				<td><a th:href="|/category/view/allpost?categoryId=1|">등산</a></td>
+	        				<!-- 												${post.id}	 -->
+	        				<td>산을 올라요</td>
+	        				<td>11.11.11</td>
+	        				<td><button class="btn btn-secondary"> 관심 </button></td>
+	        				<td>4</td>
+	        			</tr>
+	        			<tr>
+	        				<td>2.</td>
+	        				<td>tester</td>
+	        				<td>피크</td>
+	        				<td>산을 올라요</td>
+	        				<td>11.11.11</td>
+	        				<td><button class="btn btn-secondary"> 관심 </button></td>
+	        				<td>15</td>
+	        			</tr>
+	        			<tr>
+	        				<td>3.</td>
+	        				<td>user12</td>
+	        				<td>항아리</td>
+	        				<td>산을 올라요</td>
+	        				<td>11.11.11</td>
+	        				<td><button class="btn btn-secondary"> 관심 </button></td>
+	        				<td>11</td>
+	        			</tr>
+	        			<tr>
+	        				<td>4.</td>
+	        				<td>ds04011</td>
+	        				<td>물구나무서기</td>
+	        				<td>산을올라요</td>
+	        				<td>11.11.11</td>
+	        				<td><button class="btn btn-secondary"> 관심 </button></td>
+	        				<td>0</td>
+	        			</tr>
+        			</tbody>
+        		</table>
+       			
+       			
+       		</div>
+         
+         
+         
+        </section>
+        
+        
+        
+        <script layout:fragment="script">
+        
+        </script>
+        
+</html>

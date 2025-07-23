@@ -13,7 +13,7 @@
 							<a class="nav-link text-white" href="/user/view/login">로그인</a>
 						</li>
 						<li th:if="${session.userId !=null}" class="nav-item">
-							<a class="nav-link text-white" href="#">로그아웃</a>
+							<a class="nav-link text-white" href="/user/logout">로그아웃</a>
 						</li>
 					</ul>
 			</nav>
@@ -39,7 +39,7 @@
 			  <ul class="nav d-flex h-100 justify-content-around align-items-center text-white">
 			  	<li class="nav-item"><a class="nav-link text-dark" href="/post/view/mainpage">메인페이지</a></li>
 			    <li class="nav-item"><a class="nav-link text-dark" href="/post/view/allpost">전체 글 보기</a></li>
-			    <li class="nav-item"><a class="nav-link text-dark" href="#">카테고리 보기</a></li>
+			    <li class="nav-item"><a class="nav-link text-dark" href="/category/view/allcategory">카테고리 보기</a></li>
 			    <li class="nav-item"><a class="nav-link text-dark" href="#">해시태그 보기</a></li>
 			  </ul>
 			</nav>
