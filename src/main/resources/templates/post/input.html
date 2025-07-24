@@ -12,13 +12,14 @@
 		      <h2>게시글 작성</h2>
 		      <form>
 		      	<div>
-		      		<label>제목</label><input type="text" class="form-control col-8">
+		      		<label>제목</label><input type="text" id="titleInput" class="form-control col-8">
 		      	</div>
 		        <div class="form-group">
 		          <label for="summernote">내용</label>
 		          <div id="summernote"></div>
 		        </div>
-		        <button type="submit" class="btn btn-primary mt-2" th:value="${categoryId}">저장</button>
+		        <input type="hidden" id="categoryIdInput" th:value="${categoryId}">
+		        <button type="submit" id="saveBtn" class="btn btn-primary mt-2" th:value="${categoryId}">저장</button>
 		      </form>
 		    </div>
 			        	
@@ -34,6 +35,35 @@
 	              lang: 'ko-KR'
 	            });
 	          });
+	        
+	        $("#saveBtn").on("click", function(e){
+	        	e.preventDefault();
+	        	let title = $("#titleInput").val();
+	        	let contents = $('#summernote').summernote('code');
+	        	let categoryId = $("#categoryIdInput").val();
+	        	// 버튼에 부여한 값으로 가져오려고 했는데, 카테고리id  가 안넘어감. 왜그런걸까?
+	        	$.ajax({
+	        		type:"post"
+	        		, url:"/post/create"
+	        		, data:{"title":title, "contents":contents, "categoryId":categoryId}
+	        		, success:function(response){
+	        			if(response.result=="success"){
+	        				location.href="/category/view/allpost";
+ 			//	location.href = "/post/view/" + response.postId; 포스트아이디 같이 보내는법
+	        			} else {
+	        				alert("글 저장 실패");
+	        			}
+	        		}
+	        		, error:function(){
+	        			alert("글 저장 중 에러 발생");
+	        		}
+	        	});
+	        	
+	        });
+	        
+	        //Required request parameter 'categoryId' for method parameter type long is not present
+	        // 400 에러 , 
+	        
         </script>
         
 </html>
