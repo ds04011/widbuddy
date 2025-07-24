@@ -48,7 +48,7 @@
 	        		, data:{"title":title, "contents":contents, "categoryId":categoryId}
 	        		, success:function(response){
 	        			if(response.result=="success"){
-	        				location.href="/category/view/allpost";
+	        				location.href="/category/view/allpost?categoryId="+categoryId;
  			//	location.href = "/post/view/" + response.postId; 포스트아이디 같이 보내는법
 	        			} else {
 	        				alert("글 저장 실패");
@@ -61,8 +61,7 @@
 	        	
 	        });
 	        
-	        //Required request parameter 'categoryId' for method parameter type long is not present
-	        // 400 에러 , 
+
 	        
         </script>
         

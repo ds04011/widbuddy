@@ -130,15 +130,15 @@
 				alert("비밀번호가 일치하지 않습니다. ");
 				return;
 			}
-			if(!nicknameDupCheck){
-				alert("닉네임 중복 체크를 진행해주세요.");
-				return;
-			}
+			
 			if(!emailDupCheck){
 				alert("이메일 중복 체크를 진행해주세요.");
 				return;
 			}
-			
+			if(!nicknameDupCheck){
+				alert("닉네임 중복 체크를 진행해주세요.");
+				return;
+			}
 			$.ajax({
 				type:"post"
 				, url:"/user/register"

@@ -32,43 +32,17 @@
         				</tr>
         			</thead>
         			<tbody>
-	        			<tr>
-	        				<td>1.</td>
-	        				<td>ds04011</td>
-	        				<td><a th:href="|/category/view/allpost?categoryId=1|">등산</a></td>
-	        				<!-- 												${post.id}	 -->
-	        				<td>산을 올라요</td>
-	        				<td>11.11.11</td>
+	        			
+	        			<tr th:each="category, index : ${categoryList}">
+	        				<td th:text="${category.id}">1.</td>
+	        				<td th:text="${category.nickname}">ds04011</td>
+	        				<td><a th:href="|/category/view/allpost?categoryId=${category.id}|" th:text="${category.name}" class="category-link">등산</a></td>
+	        				<td th:text="${category.description}">산을 올라요</td>
+	        				<td th:text="${#temporals.format(category.createdAt, 'yyyy, M, d, a h시 m분') }">11.11.11</td>
 	        				<td><button class="btn btn-secondary"> 관심 </button></td>
 	        				<td>4</td>
 	        			</tr>
-	        			<tr>
-	        				<td>2.</td>
-	        				<td>tester</td>
-	        				<td>피크</td>
-	        				<td>산을 올라요</td>
-	        				<td>11.11.11</td>
-	        				<td><button class="btn btn-secondary"> 관심 </button></td>
-	        				<td>15</td>
-	        			</tr>
-	        			<tr>
-	        				<td>3.</td>
-	        				<td>user12</td>
-	        				<td>항아리</td>
-	        				<td>산을 올라요</td>
-	        				<td>11.11.11</td>
-	        				<td><button class="btn btn-secondary"> 관심 </button></td>
-	        				<td>11</td>
-	        			</tr>
-	        			<tr>
-	        				<td>4.</td>
-	        				<td>ds04011</td>
-	        				<td>물구나무서기</td>
-	        				<td>산을올라요</td>
-	        				<td>11.11.11</td>
-	        				<td><button class="btn btn-secondary"> 관심 </button></td>
-	        				<td>0</td>
-	        			</tr>
+	        			
         			</tbody>
         		</table>
        			

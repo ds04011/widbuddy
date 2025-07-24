@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ds04011.widbuddy.post.domain.Post;
+import com.ds04011.widbuddy.post.dto.PostDto;
 import com.ds04011.widbuddy.post.service.PostService;
 
 @Controller
@@ -30,8 +30,12 @@ public class PostController {
 	public String allpostpage(Model model) {
 		
 		
-		List<Post> postList = postService.getAllPost();
+		List<PostDto> postList = postService.getAllPostDto();
 		model.addAttribute("postList", postList);
+		
+		
+		
+		
 		
 		return "post/allpost";
 	}

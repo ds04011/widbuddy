@@ -67,3 +67,17 @@ footer {
 .footerbg{
 	background-color: #CCCACA;
 }
+
+
+.category-link {
+  color: black;
+  text-decoration: none;
+  display: inline-block; /* 배경 적용 위해 block 속성 */
+  /*padding: 4px 8px;*/
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.category-link:hover {
+  background-color: #eaeaea; /* 연한 회색 */
+  color: gray !important;     /* 회색 글씨, 강제 적용 */
+}

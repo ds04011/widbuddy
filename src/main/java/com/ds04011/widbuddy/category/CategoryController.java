@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ds04011.widbuddy.category.domain.Category;
+import com.ds04011.widbuddy.category.dto.CategoryDto;
 import com.ds04011.widbuddy.category.service.CategoryService;
-import com.ds04011.widbuddy.post.domain.Post;
+import com.ds04011.widbuddy.post.dto.PostDto;
 import com.ds04011.widbuddy.post.service.PostService;
 
 @Controller
@@ -28,8 +28,11 @@ public class CategoryController {
 	@GetMapping("/allcategory")
 	public String allcategory(Model model) {
 		
-		List<Category> categoryList = categoryService.getAllCategories();
+		List<CategoryDto> categoryList = categoryService.getAllCategorDto();
 		model.addAttribute("categoryList", categoryList);
+		
+		//nickname DTO 에 실어
+		
 		
 		return "category/allcategory";
 	}
@@ -40,9 +43,9 @@ public class CategoryController {
 		
 		// 카테고리정보를 미리 보내서 해당하는 카테고리에 속하는 글만 가져와야 함. 
 		// DTO 로 모델에 실어야함.
-		List<Post> postList =  postService.getPostByCategoryId(categoryId);
+		List<PostDto> postList =  postService.getPostDtoByCategoryId(categoryId);
 		model.addAttribute("postList", postList);
-		model.addAttribute("categoryId", categoryId);
+		
 		
 		return "category/categoryposts";
 	}

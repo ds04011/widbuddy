@@ -72,5 +72,12 @@ public class UserService {
 		return null;
 	}
 	
+	public User getUserById(long id) {
+		Optional<User> opuser =  userRepository.findById(id);
+		User user = opuser.orElse(null);
+		
+		return user;
+	}
+	
 
 }
