@@ -45,6 +45,7 @@ public class CategoryController {
 		// DTO 로 모델에 실어야함.
 		List<PostDto> postList =  postService.getPostDtoByCategoryId(categoryId);
 		model.addAttribute("postList", postList);
+		model.addAttribute("categoryId", categoryId);
 		
 		
 		return "category/categoryposts";

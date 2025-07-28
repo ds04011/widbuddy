@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+
 import com.ds04011.widbuddy.category.domain.Category;
 import com.ds04011.widbuddy.category.service.CategoryService;
 import com.ds04011.widbuddy.post.domain.Post;
@@ -29,14 +30,15 @@ public class PostService {
 		this.userService = userService;
 	}
 	
-	public boolean addPost(long userId, String title, String contents, long categoryId) {
-								// imageFile 추후 추가
+	public boolean addPost(long userId, String title, String contents, long categoryId, String imagePath) {
+								// imagePath 추후 추가
 		
 		Post post = Post.builder().userId(userId).title(title)
 				.contents(contents)
 				.categoryId(categoryId)
+				.imagePath(imagePath)
 				.build();
-		// imageFile 추후 추가
+		// imagePath 추후 추가
 		
 		try {
 			postRepository.save(post);
