@@ -52,8 +52,11 @@ public class PostController {
 	public String postDetail(@RequestParam("postId") long postId
 			, Model model) {
 		
-		model.addAttribute("postId", postId);
-		return "post/detail";
+		PostDto pd = postService.getPostDtoById(postId); 
+		
+		model.addAttribute("post", pd);
+		
+		return "post/postdetail";
 		
 		
 	}

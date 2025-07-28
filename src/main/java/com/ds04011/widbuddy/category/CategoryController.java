@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ds04011.widbuddy.category.domain.Category;
 import com.ds04011.widbuddy.category.dto.CategoryDto;
 import com.ds04011.widbuddy.category.service.CategoryService;
 import com.ds04011.widbuddy.post.dto.PostDto;
@@ -43,10 +44,12 @@ public class CategoryController {
 		
 		// 카테고리정보를 미리 보내서 해당하는 카테고리에 속하는 글만 가져와야 함. 
 		// DTO 로 모델에 실어야함.
+		Category c = categoryService.getCategoryById(categoryId);
+		String name = c.getName();
 		List<PostDto> postList =  postService.getPostDtoByCategoryId(categoryId);
 		model.addAttribute("postList", postList);
 		model.addAttribute("categoryId", categoryId);
-		
+		model.addAttribute("categoryName", name);
 		
 		return "category/categoryposts";
 	}

@@ -2,9 +2,9 @@ package com.ds04011.widbuddy.post.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-
 
 import com.ds04011.widbuddy.category.domain.Category;
 import com.ds04011.widbuddy.category.service.CategoryService;
@@ -107,6 +107,27 @@ public class PostService {
 			postDtoList.add(pd);
 		}
 		return postDtoList;
+	}
+	
+	public PostDto getPostDtoById(long id) {
+		Optional<Post> oppost = postRepository.findById(id);
+		Post p = oppost.orElse(null);
+		long userId = p.getUserId();
+		User user = userService.getUserById(userId);
+		long categoryId = p.getCategoryId();
+		Category category = categoryService.getCategoryById(categoryId);
+		
+		PostDto pd = PostDto.builder()
+				.id(p.getId())
+				.nickname(user.getNickname())
+				.title(p.getTitle())
+				.contents(p.getContents())
+				.imagePath(p.getImagePath())
+				.createdAt(p.getCreatedAt())
+				.categoryName(category.getName())
+				.build();
+		
+		return pd;
 	}
 
 }
