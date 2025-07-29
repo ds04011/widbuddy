@@ -81,3 +81,24 @@ footer {
   background-color: #eaeaea; /* 연한 회색 */
   color: gray !important;     /* 회색 글씨, 강제 적용 */
 }
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.post-author {
+    margin-top: 8px;
+    font-weight: bold;
+    color: #555;
+}
+.post-image {
+    margin-top: 16px;
+    max-width: 100%;
+    height: auto;
+}
+.post-contents {
+    margin-top: 16px;
+    white-space: pre-wrap;
+}
+

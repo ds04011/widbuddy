@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ds04011.widbuddy.category.domain.Category;
 import com.ds04011.widbuddy.category.service.CategoryService;
+import com.ds04011.widbuddy.common.HtmlUtil;
 import com.ds04011.widbuddy.post.domain.Post;
 import com.ds04011.widbuddy.post.dto.PostDto;
 import com.ds04011.widbuddy.post.repository.PostRepository;
@@ -117,11 +118,14 @@ public class PostService {
 		long categoryId = p.getCategoryId();
 		Category category = categoryService.getCategoryById(categoryId);
 		
+		// contents 를 다듬어서 사용해야함, 태그가 포함되어있어서
+		String contents =  HtmlUtil.extractPlainText(p.getContents());  
+		
 		PostDto pd = PostDto.builder()
 				.id(p.getId())
 				.nickname(user.getNickname())
 				.title(p.getTitle())
-				.contents(p.getContents())
+				.contents(contents)
 				.imagePath(p.getImagePath())
 				.createdAt(p.getCreatedAt())
 				.categoryName(category.getName())
