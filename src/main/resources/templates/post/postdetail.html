@@ -20,25 +20,78 @@
 	        
 	        <div class="post-author" th:text="'작성자: ' + ${post.nickname}">작성자</div>
 	
-	        
-	        <div th:if="${post.imagePath != null}">
+	        <!-- 
+	        <div th:if="${post.imagePath != null and !#strings.isEmpty(post.imagePath)}">
 	            <img class="post-image" th:src="@{${post.imagePath}}" alt="게시글 이미지">
 	        </div>
-	
+	 -->
 	        
-	        <div class="post-contents mb-4" th:text="${post.contents}">내용</div>
+	        <div class="post-contents mb-4" th:utext="${post.contents}">내용</div>
+	        <!-- 							th:utext 가 태그를 해석해서 쭉 해줘, 
+	        			그러니까 서머노트가 원래 이렇게 쓰라고 해놓은거네, 굳이 다듬고 깎고 할 필요 없이,
+	        			대신에 이렇게 하면 contents 안에 들어가있는 이미지이기 때문에, 삭제할 때 골치 아프다. 
+	        			삭제는 나중에 고민해보자.  	 -->
 	        <hr>
     	</div>
         
         
         
+        <div class="text-center my-3">
+        	<a th:href="|/category/view/allpost?categoryId=${post.categoryId}|" th:text="|${post.categoryName} 로 이동하기|" class="btn btn-primary">등산</a>
+        </div>
         
+        
+        <div>
+        	<!-- 댓글 가져와서 보여주기  -->
+        	<table class="table text-center p-2">
+        		<tr th:each="comment : ${comments}">
+        			<td th:text="${comment.nickname}">작성자</td>
+        			<td th:text="${comment.contents}">내용</td>
+        			<td th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">작성시간</td>
+        		</tr>
+        	</table>
+        </div>
+        
+        <div>
+        	<!-- 댓글 input 창 생성  -->
+		    <div class="d-flex flex-row align-items-start justify-content-between my-3 p-2 ">
+    			<textarea class="form-control p-2 col-10" id="contentsInput" rows="3"  placeholder="댓글을 입력하세요..." ></textarea>
+    
+			    <button type="button" 
+			            class="btn btn-outline-secondary  mr-5 mt-4" 
+			            id="commentBtn" 
+			            th:data-post-id="${post.id}">
+			        댓글달기
+			    </button>
+			</div>
+        </div>
         
         </section>
         
         
         
         <script layout:fragment="script">
+        	$("#commentBtn").on("click", function(){
+        		let contents = $("#contentsInput").val();
+        		let postId = $(this).data("post-id")
+        		
+        		$.ajax({
+        			type:"post"
+        			, url:"/comment/create"
+        			, data:{"contents":contents, "postId":postId}
+        			, success:function(response){
+        				if(response.result=="success"){
+        					location.reload();
+        				} else {
+        					alert("댓글 달기 실패");;
+        				}
+        			}
+        			, error:function(){
+        				alert("댓글 저장 중 에러 발생");
+        			}
+        		});
+        	});
+        
         
         </script>
         

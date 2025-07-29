@@ -4,18 +4,33 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
-@RequestMapping("/user/view")
+
 public class UserController {
 	
-	@GetMapping("/login")
+	@GetMapping("/user/view/login")
 	public String loginpage() {
 		return "user/login";
 	}
 	
-	@GetMapping("/register")
+	@GetMapping("/user/view/register")
 	public String registerpage() {
 		return "user/register";
+	}
+	
+	@GetMapping("/user/logout")
+	public String logout(HttpServletRequest request) {
+		HttpSession session =  request.getSession();
+		
+		session.removeAttribute("userId");
+		session.removeAttribute("nickname");
+		
+		return "redirect:/user/view/login";
+		
+		
 	}
 	
 	

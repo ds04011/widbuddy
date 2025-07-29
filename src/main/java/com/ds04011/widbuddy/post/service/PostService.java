@@ -119,16 +119,17 @@ public class PostService {
 		Category category = categoryService.getCategoryById(categoryId);
 		
 		// contents 를 다듬어서 사용해야함, 태그가 포함되어있어서
-		String contents =  HtmlUtil.extractPlainText(p.getContents());  
+//		String contents =  HtmlUtil.extractPlainText(p.getContents());  
 		
 		PostDto pd = PostDto.builder()
 				.id(p.getId())
 				.nickname(user.getNickname())
 				.title(p.getTitle())
-				.contents(contents)
+				.contents(p.getContents())
 				.imagePath(p.getImagePath())
 				.createdAt(p.getCreatedAt())
 				.categoryName(category.getName())
+				.categoryId(categoryId)
 				.build();
 		
 		return pd;

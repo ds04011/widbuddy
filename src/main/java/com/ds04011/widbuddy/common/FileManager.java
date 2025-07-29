@@ -11,7 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileManager {
 	
 	
-	public static final String FILE_UPLOAD_PATH = "D:\\javaprc\\SpringWidbuddy\\spring-tools-for-eclipse-4.31.0.RELEASE-e4.36.0-win32.win32.x86_64\\upload\\widbuddy";
+	public static final String FILE_UPLOAD_PATH = "D:\\yhw\\WidBuddy\\spring-tools-for-eclipse-4.31.0.RELEASE-e4.36.0-win32.win32.x86_64\\upload\\widbuddy";
+	// D:\\javaprc\\SpringWidbuddy\\spring-tools-for-eclipse-4.31.0.RELEASE-e4.36.0-win32.win32.x86_64\\upload\\widbuddy
 	
 	public static String saveFile(long userId, MultipartFile file) {
 		

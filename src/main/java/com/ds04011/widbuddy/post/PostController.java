@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ds04011.widbuddy.comment.dto.CommentDto;
+import com.ds04011.widbuddy.comment.service.CommentService;
 import com.ds04011.widbuddy.post.dto.PostDto;
 import com.ds04011.widbuddy.post.service.PostService;
 
@@ -16,8 +18,11 @@ import com.ds04011.widbuddy.post.service.PostService;
 public class PostController {
 	
 	private PostService postService;
-	public PostController(PostService postService) {
+	private CommentService commentService;
+	public PostController(PostService postService
+			, CommentService commentService) {
 		this.postService = postService;
+		this.commentService = commentService;
 	}
 	
 	@GetMapping("/mainpage")
@@ -53,8 +58,10 @@ public class PostController {
 			, Model model) {
 		
 		PostDto pd = postService.getPostDtoById(postId); 
-		
 		model.addAttribute("post", pd);
+		
+		List<CommentDto> cdList = commentService.getCommentByPostId(postId);
+		model.addAttribute("comments", cdList);
 		
 		return "post/postdetail";
 		
