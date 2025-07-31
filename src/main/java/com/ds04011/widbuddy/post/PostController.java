@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ds04011.widbuddy.category.dto.CategoryDto;
+import com.ds04011.widbuddy.category.service.CategoryService;
 import com.ds04011.widbuddy.comment.dto.CommentDto;
 import com.ds04011.widbuddy.comment.service.CommentService;
 import com.ds04011.widbuddy.post.dto.PostDto;
@@ -19,14 +21,24 @@ public class PostController {
 	
 	private PostService postService;
 	private CommentService commentService;
+	private CategoryService categoryService;
 	public PostController(PostService postService
-			, CommentService commentService) {
+			, CommentService commentService
+			, CategoryService categoryService) {
 		this.postService = postService;
 		this.commentService = commentService;
+		this.categoryService = categoryService;
 	}
 	
 	@GetMapping("/mainpage")
-	public String mainpage() {
+	public String mainpage(Model model) {
+		
+		List<PostDto> postList = postService.getAllPostDto();
+		List<CategoryDto> categoryList = categoryService.getAllCategorDto();
+		
+		model.addAttribute("postList", postList);
+		model.addAttribute("categoryList", categoryList);
+		
 		return "post/mainpage";  
 	}
 		

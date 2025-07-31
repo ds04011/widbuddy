@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ds04011.widbuddy.category.domain.Category;
 import com.ds04011.widbuddy.category.service.CategoryService;
-import com.ds04011.widbuddy.common.HtmlUtil;
+import com.ds04011.widbuddy.post.PostDtoAssembler;
 import com.ds04011.widbuddy.post.domain.Post;
 import com.ds04011.widbuddy.post.dto.PostDto;
 import com.ds04011.widbuddy.post.repository.PostRepository;
@@ -20,15 +20,15 @@ import jakarta.persistence.PersistenceException;
 @Service
 public class PostService {
 	
-	private UserService userService;
+
 	private PostRepository postRepository;
-	private CategoryService categoryService;
+	private PostDtoAssembler postDtoAssembler;
+	
 	public PostService(PostRepository postRepository
-			, CategoryService categoryService
-			, UserService userService) {
+			, PostDtoAssembler postDtoAssembler
+			) {
 		this.postRepository = postRepository;
-		this.categoryService = categoryService;
-		this.userService = userService;
+		this.postDtoAssembler = postDtoAssembler;
 	}
 	
 	public boolean addPost(long userId, String title, String contents, long categoryId, String imagePath) {
@@ -63,76 +63,35 @@ public class PostService {
 	
 	public List<PostDto> getPostDtoByCategoryId(long categoryId){
 		List<Post> postList =  postRepository.findAllByCategoryId(categoryId);
-		List<PostDto> postDtoList = new ArrayList<>();
-		Category category = categoryService.getCategoryById(categoryId);
-		
-		
-		for(Post p : postList) {
-			PostDto pd = PostDto.builder()
-					.id(p.getId())
-					.userId(p.getUserId())
-					.title(p.getTitle())
-					.contents(p.getContents())
-					.imagePath(p.getImagePath())
-					.createdAt(p.getCreatedAt())
-					.categoryId(p.getCategoryId())
-					.categoryName(category.getName())
-					.build();
-			
-			postDtoList.add(pd);
-			
-		}
+		List<PostDto> postDtoList = postDtoAssembler.toDtoList(postList);
 		
 		return postDtoList;
 	}
 	
 	public List<PostDto> getAllPostDto(){
-		List<Post> postList  = postRepository.findAll();
-		List<PostDto> postDtoList = new ArrayList<>();
-		
-		for(Post p : postList) {
-			
-			long userId = p.getUserId();
-			User user = userService.getUserById(userId);
-			long categoryId = p.getCategoryId();
-			Category category = categoryService.getCategoryById(categoryId);
-			
-			PostDto pd = PostDto.builder()
-					.id(p.getId())
-					.nickname(user.getNickname())
-					.title(p.getTitle())
-					.createdAt(p.getCreatedAt())
-					.categoryName(category.getName())
-					.build();
-			
-			postDtoList.add(pd);
-		}
-		return postDtoList;
+		List<Post> postList = postRepository.findAll();
+	    return postDtoAssembler.toDtoList(postList);
+
 	}
 	
 	public PostDto getPostDtoById(long id) {
 		Optional<Post> oppost = postRepository.findById(id);
 		Post p = oppost.orElse(null);
-		long userId = p.getUserId();
-		User user = userService.getUserById(userId);
-		long categoryId = p.getCategoryId();
-		Category category = categoryService.getCategoryById(categoryId);
-		
-		// contents 를 다듬어서 사용해야함, 태그가 포함되어있어서
-//		String contents =  HtmlUtil.extractPlainText(p.getContents());  
-		
-		PostDto pd = PostDto.builder()
-				.id(p.getId())
-				.nickname(user.getNickname())
-				.title(p.getTitle())
-				.contents(p.getContents())
-				.imagePath(p.getImagePath())
-				.createdAt(p.getCreatedAt())
-				.categoryName(category.getName())
-				.categoryId(categoryId)
-				.build();
-		
-		return pd;
+		return postDtoAssembler.toDto(p);
+	}
+	
+	/*
+	 *  public PostDto getPostDtoById(long id) 
+	 *  { Post post = postRepository.findById(id) .orElseThrow(() -> new PostNotFoundException(id)); 
+	 *  return postDtoAssembler.toDto(post); 
+	 *  }
+				예외처리 클래스 만들어서 이렇게 하는게 null 일 경우 더 안전하긴 하다. 
+	 * */
+	
+	
+	public int countPostNumber(long categoryId) {
+		int count = postRepository.countByCategoryId(categoryId);
+		return count;
 	}
 
 }

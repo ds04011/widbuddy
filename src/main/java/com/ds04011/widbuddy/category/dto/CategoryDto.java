@@ -16,7 +16,7 @@ public class CategoryDto {
 	private String description; // 카테고리 설명 
 	
 	private String nickname; // 생성한 유저 닉네임
-	
+	private int postNumber;
 	
 	
 	private LocalDateTime createdAt;

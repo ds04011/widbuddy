@@ -1,18 +1,13 @@
-package com.ds04011.widbuddy.post.domain;
+package com.ds04011.widbuddy.joinflag.domain;
 
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import com.ds04011.widbuddy.joinflag.domain.Joinflag;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,34 +16,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="`post`")
+@Table(name="`joinflag`")
 @Getter
 @Setter
 @Builder(toBuilder=true)
 @AllArgsConstructor                              
 @NoArgsConstructor 
-public class Post {
+public class Joinflag {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
 	private long userId;
-	
-	private String title;
-	private String contents;
-	private String imagePath;
-	
-	private long categoryId;
+	private long postId;
+	private int headcount;
+	private int currentNumber = 0;
 	
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 	
-	@UpdateTimestamp
-	private LocalDateTime updatedAt;
-	
-	//@OneToOne(mappedBy = "post", cascade = CascadeType.ALL)
-    //private Joinflag joinflag;
-
-
 }
