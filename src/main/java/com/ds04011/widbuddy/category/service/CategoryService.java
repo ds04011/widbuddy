@@ -5,9 +5,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.ds04011.widbuddy.category.CategoryDtoAssembler;
 import com.ds04011.widbuddy.category.domain.Category;
 import com.ds04011.widbuddy.category.dto.CategoryDto;
+import com.ds04011.widbuddy.category.dto.CategoryDtoAssembler;
 import com.ds04011.widbuddy.category.repository.CategoryRepository;
 import com.ds04011.widbuddy.user.service.UserService;
 
@@ -17,13 +17,11 @@ import jakarta.persistence.PersistenceException;
 public class CategoryService {
 	
 	
-	private CategoryDtoAssembler categoryDtoAssembler;
+	
 	private CategoryRepository categoryRepository;
 	public CategoryService (CategoryRepository categoryRepository
-			, CategoryDtoAssembler categoryDtoAssembler) {
+			) {
 		this.categoryRepository = categoryRepository;
-		this.categoryDtoAssembler = categoryDtoAssembler;
-		
 	}
 	
 	
@@ -45,14 +43,6 @@ public class CategoryService {
 		 return categoryRepository.findAll();
 	}
 	
-	public List<CategoryDto> getAllCategorDto(){
-		
-		List<Category> categoryList = categoryRepository.findAll();
-		List<CategoryDto> dtoList = categoryDtoAssembler.toDtoList(categoryList);
-		return dtoList;
-		
-		
-	}
 	
 	public Category getCategoryById(long id) {
 		Optional<Category> opcate = categoryRepository.findById(id);

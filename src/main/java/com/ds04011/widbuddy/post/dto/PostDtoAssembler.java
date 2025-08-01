@@ -1,4 +1,4 @@
-package com.ds04011.widbuddy.post;
+package com.ds04011.widbuddy.post.dto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import com.ds04011.widbuddy.category.domain.Category;
 import com.ds04011.widbuddy.category.service.CategoryService;
 import com.ds04011.widbuddy.post.domain.Post;
-import com.ds04011.widbuddy.post.dto.PostDto;
 import com.ds04011.widbuddy.user.domain.User;
 import com.ds04011.widbuddy.user.service.UserService;
 
@@ -23,7 +22,7 @@ public class PostDtoAssembler {
         this.categoryService = categoryService;
     }
 
-	
+	// post service 를 주입받아서, 리스트 여기서 생성하고 dto 여기서 생성하는 형태로, 
 	 public List<PostDto> toDtoList(List<Post> postList) {
 	        List<PostDto> dtoList = new ArrayList<>();
 	        for (Post p : postList) {

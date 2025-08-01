@@ -8,36 +8,51 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ds04011.widbuddy.category.domain.Category;
 import com.ds04011.widbuddy.category.dto.CategoryDto;
+import com.ds04011.widbuddy.category.dto.CategoryDtoAssembler;
 import com.ds04011.widbuddy.category.service.CategoryService;
 import com.ds04011.widbuddy.comment.dto.CommentDto;
 import com.ds04011.widbuddy.comment.service.CommentService;
+import com.ds04011.widbuddy.post.domain.Post;
 import com.ds04011.widbuddy.post.dto.PostDto;
+import com.ds04011.widbuddy.post.dto.PostDtoAssembler;
 import com.ds04011.widbuddy.post.service.PostService;
 
 @Controller
 @RequestMapping("/post/view")
 public class PostController {
 	
+	private CategoryDtoAssembler categoryDtoAssembler;
+	private PostDtoAssembler postDtoAssembler;
 	private PostService postService;
 	private CommentService commentService;
 	private CategoryService categoryService;
 	public PostController(PostService postService
 			, CommentService commentService
-			, CategoryService categoryService) {
+			, CategoryService categoryService
+			, PostDtoAssembler postDtoAssembler
+			, CategoryDtoAssembler categoryDtoAssembler) {
 		this.postService = postService;
 		this.commentService = commentService;
 		this.categoryService = categoryService;
+		this.postDtoAssembler = postDtoAssembler;
+		this.categoryDtoAssembler = categoryDtoAssembler;
 	}
 	
 	@GetMapping("/mainpage")
 	public String mainpage(Model model) {
 		
-		List<PostDto> postList = postService.getAllPostDto();
-		List<CategoryDto> categoryList = categoryService.getAllCategorDto();
 		
-		model.addAttribute("postList", postList);
-		model.addAttribute("categoryList", categoryList);
+		List<Post> postList = postService.getAllPost();
+		List<PostDto> postDtoList = postDtoAssembler.toDtoList(postList);
+		
+		List<Category> categoryList  = categoryService.getAllCategories();
+		List<CategoryDto> categoryDtoList =   categoryDtoAssembler.toDtoList(categoryList);
+		
+		
+		model.addAttribute("postList", postDtoList);
+		model.addAttribute("categoryList", categoryDtoList);
 		
 		return "post/mainpage";  
 	}
@@ -46,12 +61,9 @@ public class PostController {
 	@GetMapping("/allpost")
 	public String allpostpage(Model model) {
 		
-		
-		List<PostDto> postList = postService.getAllPostDto();
-		model.addAttribute("postList", postList);
-		
-		
-		
+		List<Post> postList = postService.getAllPost();
+		List<PostDto> postDtoList = postDtoAssembler.toDtoList(postList);
+		model.addAttribute("postList", postDtoList);
 		
 		
 		return "post/allpost";
@@ -69,7 +81,8 @@ public class PostController {
 	public String postDetail(@RequestParam("postId") long postId
 			, Model model) {
 		
-		PostDto pd = postService.getPostDtoById(postId); 
+		Post post = postService.getPostById(postId);
+		PostDto pd = postDtoAssembler.toDto(post);
 		model.addAttribute("post", pd);
 		
 		List<CommentDto> cdList = commentService.getCommentByPostId(postId);

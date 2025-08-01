@@ -1,19 +1,13 @@
 package com.ds04011.widbuddy.post.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.ds04011.widbuddy.category.domain.Category;
-import com.ds04011.widbuddy.category.service.CategoryService;
-import com.ds04011.widbuddy.post.PostDtoAssembler;
+import com.ds04011.widbuddy.joinflag.Service.JoinflagService;
 import com.ds04011.widbuddy.post.domain.Post;
-import com.ds04011.widbuddy.post.dto.PostDto;
 import com.ds04011.widbuddy.post.repository.PostRepository;
-import com.ds04011.widbuddy.user.domain.User;
-import com.ds04011.widbuddy.user.service.UserService;
 
 import jakarta.persistence.PersistenceException;
 
@@ -22,33 +16,46 @@ public class PostService {
 	
 
 	private PostRepository postRepository;
-	private PostDtoAssembler postDtoAssembler;
+	private JoinflagService joinflagService;
 	
 	public PostService(PostRepository postRepository
-			, PostDtoAssembler postDtoAssembler
+			, JoinflagService joinflagService
 			) {
 		this.postRepository = postRepository;
-		this.postDtoAssembler = postDtoAssembler;
+		this.joinflagService = joinflagService;
+		
 	}
 	
-	public boolean addPost(long userId, String title, String contents, long categoryId, String imagePath) {
-								// imagePath 추후 추가
-		
+	public boolean addPost(long userId, String title, String contents, long categoryId, String imagePath
+			, int headcount) {
+								
+		// 1. post 생성.
 		Post post = Post.builder().userId(userId).title(title)
 				.contents(contents)
 				.categoryId(categoryId)
 				.imagePath(imagePath)
 				.build();
-		// imagePath 추후 추가
+		
 		
 		try {
-			postRepository.save(post);
+			Post genPost = postRepository.save(post);
+		
+			
+			if(headcount !=0) {
+				joinflagService.addJoinflag(userId, genPost, headcount);
+			}
+			
 			
 		} catch(PersistenceException e) {
 			return false;
 		}
-		
 		return true;
+	}
+	
+	public Post getPostById(long id) {
+		Optional<Post> oppost = postRepository.findById(id);
+		Post post = oppost.orElse(null);
+		return post;
 	}
 	
 	public List<Post> getAllPost(){
@@ -61,25 +68,7 @@ public class PostService {
 		return postList;
 	}
 	
-	public List<PostDto> getPostDtoByCategoryId(long categoryId){
-		List<Post> postList =  postRepository.findAllByCategoryId(categoryId);
-		List<PostDto> postDtoList = postDtoAssembler.toDtoList(postList);
-		
-		return postDtoList;
-	}
-	
-	public List<PostDto> getAllPostDto(){
-		List<Post> postList = postRepository.findAll();
-	    return postDtoAssembler.toDtoList(postList);
 
-	}
-	
-	public PostDto getPostDtoById(long id) {
-		Optional<Post> oppost = postRepository.findById(id);
-		Post p = oppost.orElse(null);
-		return postDtoAssembler.toDto(p);
-	}
-	
 	/*
 	 *  public PostDto getPostDtoById(long id) 
 	 *  { Post post = postRepository.findById(id) .orElseThrow(() -> new PostNotFoundException(id)); 

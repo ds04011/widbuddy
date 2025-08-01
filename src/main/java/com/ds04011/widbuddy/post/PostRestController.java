@@ -9,56 +9,50 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ds04011.widbuddy.common.FileManager;
+import com.ds04011.widbuddy.joinflag.Service.JoinflagService;
+import com.ds04011.widbuddy.post.domain.Post;
 import com.ds04011.widbuddy.post.service.PostService;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @RestController
 public class PostRestController {
 	
+	private JoinflagService joinflagService;
 	private PostService postService;
-	public PostRestController(PostService postService) { 
+	public PostRestController(PostService postService
+			, JoinflagService joinflagService) { 
 		this.postService = postService;
+		this.joinflagService = joinflagService;
 	}
 	
 	
 	@PostMapping("/post/create")
+	@Transactional
 	public Map<String, String> postcreate(@RequestParam("title") String title
 			, @RequestParam("contents") String contents
 			, @RequestParam("categoryId") long categoryId
 			, @RequestParam(value = "imagePath", required = false) String imagePath 
 			// 서머노트는 이미지를 올리는 메서드가 별도로 필요하대, 
 			// 이미 저장은 끝났고, imagePath 만 받아와서 post  의 컬럼 값으로 저장이 되면 되니까, String 으로 받아오자. 
-			, HttpSession session) {
+			, HttpSession session
+			, @RequestParam("headcount") int headcount) {
 		
 		long userId = (Long)session.getAttribute("userId");
-		
 		Map<String, String> resultMap = new HashMap<>();
 		
-		if(postService.addPost(userId, title, contents, categoryId, imagePath)) { // imagePath 추가
+		
+		if(postService.addPost(userId, title, contents, categoryId, imagePath, headcount)) { // imagePath 추가
 			resultMap.put("result",  "success");
 		} else {
 			resultMap.put("result", "fail");
 		}
+		
 		return resultMap;	
 	}
 	
-	
-//	@PostMapping("/create")
-//	@Transactional
-//	public ResponseEntity<?> createPostWithJoinFlag(@RequestBody PostDto postDto) {
-//	    Post post = postRepository.save(new Post(...)); // 먼저 저장
-//	    Joinflag joinflag = new Joinflag(...);
-//	    joinflag.setPost(post); // Post 주입
-//	    joinflagRepository.save(joinflag);
-//	    return ResponseEntity.ok().build();
-//	}
-	
-	
-	
-	
-	
-	
+
 	
 	@PostMapping("/post/uploadimage")
 	public String uploadImage(@RequestParam("file") MultipartFile file

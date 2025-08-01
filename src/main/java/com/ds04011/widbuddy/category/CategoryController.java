@@ -10,30 +10,38 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ds04011.widbuddy.category.domain.Category;
 import com.ds04011.widbuddy.category.dto.CategoryDto;
+import com.ds04011.widbuddy.category.dto.CategoryDtoAssembler;
 import com.ds04011.widbuddy.category.service.CategoryService;
+import com.ds04011.widbuddy.post.domain.Post;
 import com.ds04011.widbuddy.post.dto.PostDto;
+import com.ds04011.widbuddy.post.dto.PostDtoAssembler;
 import com.ds04011.widbuddy.post.service.PostService;
 
 @Controller
 @RequestMapping("/category/view")
 public class CategoryController {
 	
+	private CategoryDtoAssembler categoryDtoAssembler;
+	private PostDtoAssembler postDtoAssembler;
 	private CategoryService categoryService ;
 	private PostService postService;
 	public CategoryController(CategoryService categoryService
-			, PostService postService) {
+			, PostService postService
+			, PostDtoAssembler postDtoAssembler
+			, CategoryDtoAssembler categoryDtoAssembler) {
 		this.categoryService = categoryService ;
 		this.postService = postService;
+		this.postDtoAssembler = postDtoAssembler;
+		this.categoryDtoAssembler = categoryDtoAssembler;
 	}
 	
 	@GetMapping("/allcategory")
 	public String allcategory(Model model) {
 		
-		List<CategoryDto> categoryList = categoryService.getAllCategorDto();
-		model.addAttribute("categoryList", categoryList);
 		
-		//nickname DTO 에 실어
-		
+		List<Category> categoryList = categoryService.getAllCategories();
+		List<CategoryDto> categoryDtoList = categoryDtoAssembler.toDtoList(categoryList); 
+		model.addAttribute("categoryList", categoryDtoList);
 		
 		return "category/allcategory";
 	}
@@ -46,8 +54,12 @@ public class CategoryController {
 		// DTO 로 모델에 실어야함.
 		Category c = categoryService.getCategoryById(categoryId);
 		String name = c.getName();
-		List<PostDto> postList =  postService.getPostDtoByCategoryId(categoryId);
-		model.addAttribute("postList", postList);
+		
+		List<Post>  postList = postService.getPostByCategoryId(categoryId);
+		List<PostDto> postDtoList = postDtoAssembler.toDtoList(postList);
+		
+		
+		model.addAttribute("postList", postDtoList);
 		model.addAttribute("categoryId", categoryId);
 		model.addAttribute("categoryName", name);
 		

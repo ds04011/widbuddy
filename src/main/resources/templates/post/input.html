@@ -19,7 +19,23 @@
 		          <div id="summernote"></div>
 		        </div>
 		        <input type="hidden" id="categoryIdInput" th:value="${categoryId}">
-		        <button type="submit" id="saveBtn" class="btn btn-primary mt-2" th:value="${categoryId}">저장</button>
+		        
+		        <!--  우선 토글을 통해서 
+		        	인풋창을 보이기 안보이기 를 조절해보자 -->
+		        
+		        <div class="joinflagInput">
+		        
+		        	<button type="button" class="btn btn-sm btn-primary" onclick="toggleInput()">입력창 토글</button>
+		        	
+		        	<div id="toggleInputDiv" class="mt-2" style="display: none;">
+					    <input type="number" class="form-control" id="headcountInput" placeholder="인원수를 입력해주세요." value="0" min="0">
+					</div>
+		        	
+		        </div>
+		        
+		        <button type="submit" id="saveBtn" class="btn btn-primary my-2" th:value="${categoryId}">저장</button>
+		        
+		        
 		      </form>
 		    </div>
 			        	
@@ -28,6 +44,20 @@
         
         
         <script layout:fragment="script">
+	        function toggleInput() {
+	            const inputDiv = document.getElementById("toggleInputDiv");
+	            const input = document.getElementById("headcountInput");
+	
+	            if (inputDiv.style.display === "none") {
+	                inputDiv.style.display = "block";
+	            } else {
+	                inputDiv.style.display = "none";
+	                input.value = "0"; // 토글 꺼질 때 값 초기화
+	            }
+	        }
+
+
+        
         
         	let uploadedImageUrl = null;
         
@@ -72,11 +102,13 @@
 	        	let title = $("#titleInput").val();
 	        	let contents = $('#summernote').summernote('code');
 	        	let categoryId = $("#categoryIdInput").val();
+	        	let headcount = $("#headcountInput").val();
 	        	
 	        	$.ajax({
 	        		type:"post"
 	        		, url:"/post/create"
-	        		, data:{"title":title, "contents":contents, "categoryId":categoryId, "imagePath": uploadedImageUrl}
+	        		, data:{"title":title, "contents":contents, "categoryId":categoryId, "imagePath": uploadedImageUrl
+	        			, "headcount":headcount}
 	        		, success:function(response){
 	        			if(response.result=="success"){
 	        				location.href="/category/view/allpost?categoryId="+categoryId;
