@@ -20,22 +20,22 @@ public class JoinflagController {
 		this.joinflagService = joinflagService;
 	}
 	
-	@PostMapping("/joinflag/create")
-	@ResponseBody
-	public Map<String, String> createjoinflag(@RequestParam("postId") long postId
-			, @RequestParam("headcount") int headcount
-			, HttpSession session){
-		
-		long userId = (Long)session.getAttribute("userId");
-		Map<String, String> resultMap = new HashMap<>();
-		
-		if(joinflagService.addJoinflag(userId, postId, headcount)) {
-			resultMap.put("result", "success");
-		} else {
-			resultMap.put("result", "fail");
-		}
-		return resultMap;
-	}
+//	@PostMapping("/joinflag/create")
+//	@ResponseBody
+//	public Map<String, String> createjoinflag(@RequestParam("postId") long postId
+//			, @RequestParam("headcount") int headcount
+//			, HttpSession session){
+//		
+//		long userId = (Long)session.getAttribute("userId");
+//		Map<String, String> resultMap = new HashMap<>();
+//		
+//		if(joinflagService.addJoinflag(userId, postId, headcount)) {
+//			resultMap.put("result", "success");
+//		} else {
+//			resultMap.put("result", "fail");
+//		}
+//		return resultMap;
+//	}
 	
 	
 }

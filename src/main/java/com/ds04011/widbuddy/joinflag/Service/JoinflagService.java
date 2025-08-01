@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.ds04011.widbuddy.joinflag.domain.Joinflag;
 import com.ds04011.widbuddy.joinflag.repository.JoinflagRepository;
+import com.ds04011.widbuddy.post.domain.Post;
 
 import jakarta.persistence.PersistenceException;
 
@@ -15,11 +16,11 @@ public class JoinflagService {
 		this.joinflagRepository = joinflagRepository;
 	}
 	
-	public boolean addJoinflag(long userId, long postId, int headcount) {
+	public boolean addJoinflag(long userId, Post post, int headcount) {
 		
 		Joinflag flag = Joinflag.builder()
 				.userId(userId)
-				.postId(postId)
+				.post(post)
 				.headcount(headcount)
 				.build();
 		try {

@@ -43,6 +43,23 @@ public class PostRestController {
 		return resultMap;	
 	}
 	
+	
+//	@PostMapping("/create")
+//	@Transactional
+//	public ResponseEntity<?> createPostWithJoinFlag(@RequestBody PostDto postDto) {
+//	    Post post = postRepository.save(new Post(...)); // 먼저 저장
+//	    Joinflag joinflag = new Joinflag(...);
+//	    joinflag.setPost(post); // Post 주입
+//	    joinflagRepository.save(joinflag);
+//	    return ResponseEntity.ok().build();
+//	}
+	
+	
+	
+	
+	
+	
+	
 	@PostMapping("/post/uploadimage")
 	public String uploadImage(@RequestParam("file") MultipartFile file
 			, HttpSession session) {
