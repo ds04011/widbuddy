@@ -1,5 +1,8 @@
 package com.ds04011.widbuddy.joinflag.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.ds04011.widbuddy.joinflag.domain.Joinflag;
@@ -29,6 +32,48 @@ public class JoinflagService {
 			return false;
 		}
 		return true;
+	}
+	
+	public int callHeadcount(long postId) {
+		
+		
+		// postId 로 flag  존재 여부 파악, 있으면 해당 flag 의 headcount 리턴, 없으면 0 리턴 
+		
+		Optional<Joinflag> opflag = joinflagRepository.findByPostId(postId);
+		Joinflag flag = opflag.orElse(null);
+		
+		if(flag == null) {
+			return 0;
+		} else {
+			return flag.getHeadcount();
+		}
+	}
+	
+	public int callCurrentNumber(long postId) {
+		Optional<Joinflag> opflag = joinflagRepository.findByPostId(postId);
+		Joinflag flag = opflag.orElse(null);
+		
+		if(flag == null) {
+			return 0;
+		} else {
+			return flag.getCurrentNumber();
+		}
+	}
+	
+	public long callJoinflagId(long postId) {
+		Optional<Joinflag> opflag = joinflagRepository.findByPostId(postId);
+		Joinflag flag = opflag.orElse(null);
+		
+		if(flag == null) {
+			return 0;  // 게시글마다 있는게 아니라서, 없는 경우, 0 리턴 
+		} else {
+			return flag.getId();  // 있으면 값 리턴 
+		}
+	}
+	
+	public List<Joinflag> findByUserId(long userId){
+		List<Joinflag> flagList = joinflagRepository.findByUserId(userId);
+		return flagList;
 	}
 
 }

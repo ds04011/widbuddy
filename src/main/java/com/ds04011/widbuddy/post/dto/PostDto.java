@@ -26,4 +26,6 @@ public class PostDto {
 	private long categoryId;
 	private String nickname;
 
+	private int headcount = 0;
+	private int currentNumber = 0;
 }

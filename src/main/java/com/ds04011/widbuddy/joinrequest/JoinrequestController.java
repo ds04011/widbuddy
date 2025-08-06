@@ -20,7 +20,7 @@ public class JoinrequestController {
 		this.joinrequestService = joinrequestService;
 	}
 	
-	@PostMapping("/joinreqeust/create")
+	@PostMapping("/joinrequest/create")
 	@ResponseBody
 	public Map<String, String> createRequest(@RequestParam("joinflagId") long joinflagId
 			, @RequestParam("description") String description

@@ -12,15 +12,19 @@ import com.ds04011.widbuddy.category.domain.Category;
 import com.ds04011.widbuddy.category.dto.CategoryDto;
 import com.ds04011.widbuddy.category.dto.CategoryDtoAssembler;
 import com.ds04011.widbuddy.category.service.CategoryService;
+import com.ds04011.widbuddy.interest.service.InterestService;
 import com.ds04011.widbuddy.post.domain.Post;
 import com.ds04011.widbuddy.post.dto.PostDto;
 import com.ds04011.widbuddy.post.dto.PostDtoAssembler;
 import com.ds04011.widbuddy.post.service.PostService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/category/view")
 public class CategoryController {
 	
+	private InterestService interestService;
 	private CategoryDtoAssembler categoryDtoAssembler;
 	private PostDtoAssembler postDtoAssembler;
 	private CategoryService categoryService ;
@@ -28,11 +32,13 @@ public class CategoryController {
 	public CategoryController(CategoryService categoryService
 			, PostService postService
 			, PostDtoAssembler postDtoAssembler
-			, CategoryDtoAssembler categoryDtoAssembler) {
+			, CategoryDtoAssembler categoryDtoAssembler
+			, InterestService interestService) {
 		this.categoryService = categoryService ;
 		this.postService = postService;
 		this.postDtoAssembler = postDtoAssembler;
 		this.categoryDtoAssembler = categoryDtoAssembler;
+		this.interestService = interestService;
 	}
 	
 	@GetMapping("/allcategory")
@@ -47,8 +53,9 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/allpost")
-	public String allpost(@RequestParam("categoryId") long categoryId,
-			Model model) {
+	public String allpost(@RequestParam("categoryId") long categoryId
+			, HttpSession session
+			, Model model) {
 		
 		// 카테고리정보를 미리 보내서 해당하는 카테고리에 속하는 글만 가져와야 함. 
 		// DTO 로 모델에 실어야함.
@@ -58,7 +65,11 @@ public class CategoryController {
 		List<Post>  postList = postService.getPostByCategoryId(categoryId);
 		List<PostDto> postDtoList = postDtoAssembler.toDtoList(postList);
 		
+		long userId = (Long) session.getAttribute("userId");
+		// 관심정보,  userId, categoryId 기반으로 interest 가져와서, 해당 interest 의 isInterest 를  
+		int isInterest = interestService.isInterest(userId, categoryId); // 1 = 관심, 0 = ㄴㄴ
 		
+		model.addAttribute("isInterest", isInterest);
 		model.addAttribute("postList", postDtoList);
 		model.addAttribute("categoryId", categoryId);
 		model.addAttribute("categoryName", name);

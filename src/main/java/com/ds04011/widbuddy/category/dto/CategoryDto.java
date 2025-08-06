@@ -18,6 +18,9 @@ public class CategoryDto {
 	private String nickname; // 생성한 유저 닉네임
 	private int postNumber;
 	
+	private int isInterest;
+	
+	//private boolean isInterest;
 	
 	private LocalDateTime createdAt;
 	

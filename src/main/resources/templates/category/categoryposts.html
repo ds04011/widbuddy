@@ -11,7 +11,20 @@
         		<h4 th:text="${categoryName}" class="text-center mt-4">카테고리명</h4>
 		        <div class="d-flex justify-content-between my-1">	
        				<h5 class="mt-5 ml-3">글 리스트</h5>
-       				<a class="btn btn-sm btn-secondary mt-5" th:href="|/post/view/create?categoryId=${categoryId}|">글쓰기</a>
+       				<div class="mt-5">
+       				
+       					<button class="btn btn-sm btn-secondary" th:if="${isInterest == 0}" id="interestAddBtn" th:data-category-id="${categoryId}">
+					        <i class="bi bi-plus-circle"></i> 관심등록
+					    </button>
+					
+					    <!-- isInterest가 1일 때: 관심 있음 버튼 (체크 아이콘) -->
+					    <button class="btn btn-sm btn-secondary" th:if="${isInterest == 1}" id="interestCancelBtn" th:data-category-id="${categoryId}">
+					        <i class="bi bi-check-circle"></i> 관심
+					    </button>
+       					
+       					
+       					<a class="btn btn-sm btn-secondary " th:href="|/post/view/create?categoryId=${categoryId}|">글쓰기</a>
+       				</div>
        			</div>
         		<table class="table text-center p-2">
         			<thead>
@@ -29,7 +42,17 @@
 	        				<td><a th:href="|/post/view/detail?postId=${post.id}|" th:text="${post.title}" class="category-link">등산</a></td>
 	        				<td th:text="${post.categoryName}">카테고리</td>
 	        				
-	        				<td>모집시행시, 깃발아이콘 + 숫자</td>
+	        				<td>
+	        					<span th:if="${post.headcount !=0 }">
+		        						<i class="bi bi-flag-fill"></i>
+		        						<span th:classappend="${post.currentNumber == post.headcount} ? 'text-success'" 
+      										th:text="${post.currentNumber + ' / ' + post.headcount}">0 / 5</span>
+		        					</span>
+		        					
+		        					<span th:if="${post.headcount == 0 }">
+		        						
+		        					</span>
+	        				</td>
 	        			</tr>
         			</tbody>
         		</table>
@@ -37,10 +60,54 @@
         
         
         </section>
-        
+        	
+        	
         
         
         <script layout:fragment="script">
+        	$("#interestAddBtn").on("click", function(){
+        		
+        		let categoryId = $(this).data("category-id");
+        		
+        		$.ajax({
+        			type:"post"
+        			, url:"/interest/create"
+        			, data:{"categoryId":categoryId}
+        			, success:function(response){
+        				if(response.result=="success"){
+        					location.reload();
+        				} else {
+        					alert("관심 등록 실패");
+        				}
+        			}
+        			, error:function(){
+        				alert("관심 등록 중 에러 발생");
+        			}
+        		});
+        	});
+        	
+        	
+			$("#interestCancelBtn").on("click", function(){
+        		
+        		let categoryId = $(this).data("category-id");
+        		
+        		$.ajax({
+        			type:"delete"
+        			, url:"/interest/delete"
+        			, data:{"categoryId":categoryId}
+        			, success:function(response){
+        				if(response.result=="success"){
+        					location.reload();
+        				} else {
+        					alert("관심 삭제 실패");
+        				}
+        			}
+        			, error:function(){
+        				alert("관심 삭제 중 에러 발생");
+        			}
+        		});
+        	});
+        
         
         </script>
         

@@ -82,5 +82,9 @@ public class PostService {
 		int count = postRepository.countByCategoryId(categoryId);
 		return count;
 	}
+	
+	public List<Post> getPostsByUserId(long userId){
+		return postRepository.findAllByUserId(userId);
+	}
 
 }

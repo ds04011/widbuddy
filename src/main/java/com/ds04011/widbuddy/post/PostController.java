@@ -14,6 +14,7 @@ import com.ds04011.widbuddy.category.dto.CategoryDtoAssembler;
 import com.ds04011.widbuddy.category.service.CategoryService;
 import com.ds04011.widbuddy.comment.dto.CommentDto;
 import com.ds04011.widbuddy.comment.service.CommentService;
+import com.ds04011.widbuddy.joinflag.Service.JoinflagService;
 import com.ds04011.widbuddy.post.domain.Post;
 import com.ds04011.widbuddy.post.dto.PostDto;
 import com.ds04011.widbuddy.post.dto.PostDtoAssembler;
@@ -23,6 +24,7 @@ import com.ds04011.widbuddy.post.service.PostService;
 @RequestMapping("/post/view")
 public class PostController {
 	
+	private JoinflagService joinflagService;
 	private CategoryDtoAssembler categoryDtoAssembler;
 	private PostDtoAssembler postDtoAssembler;
 	private PostService postService;
@@ -32,12 +34,14 @@ public class PostController {
 			, CommentService commentService
 			, CategoryService categoryService
 			, PostDtoAssembler postDtoAssembler
-			, CategoryDtoAssembler categoryDtoAssembler) {
+			, CategoryDtoAssembler categoryDtoAssembler
+			, JoinflagService joinflagService) {
 		this.postService = postService;
 		this.commentService = commentService;
 		this.categoryService = categoryService;
 		this.postDtoAssembler = postDtoAssembler;
 		this.categoryDtoAssembler = categoryDtoAssembler;
+		this.joinflagService = joinflagService;
 	}
 	
 	@GetMapping("/mainpage")
@@ -87,6 +91,12 @@ public class PostController {
 		
 		List<CommentDto> cdList = commentService.getCommentByPostId(postId);
 		model.addAttribute("comments", cdList);
+		
+		
+		//joinflag Id 를 여기서 실어주자? dto 로 하는게 맞다? 컨트롤러로 받아서 서비스에서 처리하는 메서드가 맞다?
+		long joinflagId = joinflagService.callJoinflagId(postId);
+		model.addAttribute("joinflagId", joinflagId);
+		
 		
 		return "post/postdetail";
 		

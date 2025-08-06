@@ -17,15 +17,25 @@
 		        				<th>게시글 번호 </th>
 		        				<th>제목</th>
 		        				<th>카테고리</th>
-		        				<th>모집시행시, 깃발아이콘 + 숫자</th>
+		        				<th>모집여부</th>
 		        			</tr>
 	        			</thead>
 	        			<tbody>
 	        				<tr th:each="post : ${postList}">
 		        				<td th:text="${post.id}">게시글 번호 1.</td>
-		        				<td th:text="${post.title}">제목</td>
+		        				<td><a th:href="|/post/view/detail?postId=${post.id}|" th:text="${post.title}" class="category-link">등산</a></td>
 		        				<td th:text="${post.categoryName}">카테고리</td>
-		        				<td >모집시행시, 깃발아이콘 + 숫자</td>
+		        				<td >
+		        					<span th:if="${post.headcount !=0 }">
+		        						<i class="bi bi-flag-fill"></i>
+		        						<span th:classappend="${post.currentNumber == post.headcount} ? 'text-success'" 
+      										th:text="${post.currentNumber + ' / ' + post.headcount}">0 / 5</span>
+		        					</span>
+		        					
+		        					<span th:if="${post.headcount == 0 }">
+		        						
+		        					</span>
+		        				</td>
 		        			</tr>
 	        			</tbody>
 	        			
@@ -45,7 +55,7 @@
 	        			</thead>
 	        			<tbody>
 	        				<tr th:each="category : ${categoryList}">
-		        				<td th:text="${category.name}">카테고리 명</td>
+		        				<td><a th:href="|/category/view/allpost?categoryId=${category.id}|" th:text="${category.name}" class="category-link">등산</a></td>
 		        				<td th:text="|${category.postNumber}개|">글 개수</td>
 		        				<td>관심 누른 사람 수 </td>
 		        				<td>활성화 된 모집시행 수 </td>

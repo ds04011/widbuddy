@@ -13,6 +13,7 @@ public interface PostRepository extends JpaRepository<Post, Long>{
 	
 	public int countByCategoryId(long categoryId);
 	
+	public List<Post> findAllByUserId(long userId);
 	
 
 }
