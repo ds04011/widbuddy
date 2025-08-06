@@ -42,11 +42,11 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/allcategory")
-	public String allcategory(Model model) {
+	public String allcategory(Model model, HttpSession session) {
 		
-		
+		long userId = (Long)session.getAttribute("userId");
 		List<Category> categoryList = categoryService.getAllCategories();
-		List<CategoryDto> categoryDtoList = categoryDtoAssembler.toDtoList(categoryList); 
+		List<CategoryDto> categoryDtoList = categoryDtoAssembler.toCateDtoList(categoryList, userId); 
 		model.addAttribute("categoryList", categoryDtoList);
 		
 		return "category/allcategory";
