@@ -53,5 +53,8 @@ public class InterestService {
 		}
 	} // 지금 이건, 컬럼 값 안쓰고 존재여부로 확인하는건데, 애매하네, 일단 지우자. 
 	
+	public int countByCategoryId(long categoryId) {
+		return interestRepository.countByCategoryId(categoryId);
+	}
 	
 }

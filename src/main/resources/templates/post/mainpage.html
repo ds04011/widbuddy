@@ -57,7 +57,7 @@
 	        				<tr th:each="category : ${categoryList}">
 		        				<td><a th:href="|/category/view/allpost?categoryId=${category.id}|" th:text="${category.name}" class="category-link">등산</a></td>
 		        				<td th:text="|${category.postNumber}개|">글 개수</td>
-		        				<td>관심 누른 사람 수 </td>
+		        				<td th:text="${category.interestNumber}">관심 누른 사람 수 </td>
 		        				<td>활성화 된 모집시행 수 </td>
 		        			</tr>
 	        			</tbody>

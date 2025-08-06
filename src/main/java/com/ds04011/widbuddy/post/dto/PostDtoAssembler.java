@@ -18,6 +18,7 @@ public class PostDtoAssembler {
 	private final UserService userService;
     private final CategoryService categoryService;
     private final JoinflagService joinflagService; 
+    
 
     public PostDtoAssembler(UserService userService, CategoryService categoryService
     		, JoinflagService joinflagService) {
@@ -34,6 +35,9 @@ public class PostDtoAssembler {
 	            int headcount = joinflagService.callHeadcount(p.getId()); 
 		        int currentNumber = joinflagService.callCurrentNumber(p.getId());
 		        
+		        User user = userService.getUserById(p.getUserId());
+		        String userName = user.getNickname();
+		        
 	            dtoList.add(PostDto.builder()
 	                .id(p.getId())
 	                .userId(p.getUserId())
@@ -45,6 +49,7 @@ public class PostDtoAssembler {
 	                .categoryName(categoryName)
 	                .headcount(headcount)
 		            .currentNumber(currentNumber)
+		            .userName(userName)
 	                .build());
 	            
 	            
@@ -59,6 +64,7 @@ public class PostDtoAssembler {
 	        int headcount = joinflagService.callHeadcount(post.getId()); 
 	        int currentNumber = joinflagService.callCurrentNumber(post.getId());
 	        return PostDto.builder()
+	        	.userId(post.getUserId())
 	            .id(post.getId())
 	            .nickname(user.getNickname())
 	            .title(post.getTitle())

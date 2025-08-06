@@ -31,7 +31,7 @@
 	        			<tr>
 	        				<th>게시글 번호 </th>
 	        				<th>제목</th>
-	        				<th>카테고리</th>
+	        				<th>작성시간</th>
 	        				
 	        				<th>모집, 숫자</th>
 	        			</tr>
@@ -40,7 +40,7 @@
 	        			<tr th:each="post : ${postList}">
 	        				<td th:text="${post.id}">게시글 번호 1.</td>
 	        				<td><a th:href="|/post/view/detail?postId=${post.id}|" th:text="${post.title}" class="category-link">등산</a></td>
-	        				<td th:text="${post.categoryName}">카테고리</td>
+	        				<td th:text="${#temporals.format(post.createdAt, 'yyyy, M, d, a h시 m분') }">11.11.11</td>
 	        				
 	        				<td>
 	        					<span th:if="${post.headcount !=0 }">

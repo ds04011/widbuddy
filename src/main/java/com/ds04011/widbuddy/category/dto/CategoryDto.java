@@ -19,8 +19,11 @@ public class CategoryDto {
 	private int postNumber;
 	
 	private int isInterest;
+	private int interestNumber;
 	
-	//private boolean isInterest;
+	// 모집중인 인원 수를 알려야해, 기본적으로 joinflag 의 정보가 필요하다. 
+	// joinflag 의 각 객체 마다, headcount - currentNumber 의 값을, 누적해서 더해, 
+	private int totalRecruitNumber;
 	
 	private LocalDateTime createdAt;
 	

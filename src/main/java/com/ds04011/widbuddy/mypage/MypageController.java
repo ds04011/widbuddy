@@ -46,10 +46,10 @@ public class MypageController {
 		
 		
 		
-		List<Joinrequest> requestList = joinrequestService.findByUserId(userId);
-		model.addAttribute("requestList", requestList);
-		List<Joinflag> flagList =  joinflagService.findByUserId(userId);
-		model.addAttribute("flagList", flagList);
+//		List<Joinrequest> requestList = joinrequestService.findByUserId(userId);
+//		model.addAttribute("requestList", requestList);
+//		List<Joinflag> flagList =  joinflagService.findByUserId(userId);
+//		model.addAttribute("flagList", flagList);
 		
 		
 		

@@ -40,18 +40,26 @@
       			th:text="${post.currentNumber + ' / ' + post.headcount}">0 / 5</span>
       			
       			<button type="button"
-			          th:if="${post.currentNumber < post.headcount}"
+			          th:if="${session.userId != post.userId}"
 			          class="btn btn-primary btn-sm ms-2 ml-5"
-			          data-toggle="modal" data-target="#exampleModal">
+			          data-toggle="modal" data-target="#requestModal">
 			    신청
 			  </button>
-      			
+			  
+			  <button type="button"
+			          th:if="${session.userId == post.userId}"
+			          class="btn btn-primary btn-sm ms-2 ml-5"
+			          data-toggle="modal" data-target="#flagModal">
+			    신청 현황
+			  </button>
+			  
+      			<!--  여기서, 세션정보를 통해 글쓴이 는, 신청현황 버튼이 뜨고, 신청 라인업을 볼 수 있게 모달창을 구성하자. -->
         	<hr>
         </div>
         
         
-		        <!-- 모달 -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		        <!-- 신청 모달 -->
+		<div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
@@ -73,6 +81,38 @@
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 		        <button type="button" class="btn btn-success" id="requestBtn" th:data-joinflag-id="${joinflagId}">요청</button>
 		      </div>
+		    </div>
+		  </div>
+		</div>
+        
+		        <!-- 신청 현황 모달 -->
+		<div class="modal fade" id="flagModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		    
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">신청 현황</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      
+		      <div class="modal-body">
+		      	
+		        <div th:each="request : ${requestList}" class="d-flex align-items-center justify-content-between mb-2">
+				  <span><strong th:text="${request.userName}"></strong>님의 요청</span>
+				  <div>
+				    <button type="button" class="btn btn-success btn-sm mr-1 acceptBtn" th:data-id="${request.id}">수락</button>
+				    <button type="button" class="btn btn-danger btn-sm denyBtn" th:data-id="${request.id}">거절</button>
+				  </div>
+				</div>
+
+		      </div>
+		      
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+		      </div>
+		      
 		    </div>
 		  </div>
 		</div>
@@ -116,6 +156,50 @@
         
         
         <script layout:fragment="script">
+        
+        	$(".acceptBtn").on("click", function(){
+        		let requestId = $(this).data("id");
+        		let state = "수락";
+        		
+        		$.ajax({
+        			type:"put"
+        			, url:"/joinrequest/confirm"
+        			, data:{"joinrequestId":requestId, "state":state}
+        			, success:function(response){
+        				if(response.result=="success"){
+        					
+        				} else {
+        					alert("신청 수락 실패");
+        				}
+        			}
+        			, error:function(){
+        				alert("신청 수락 거절 중 에러 발생");
+        			}
+        		});
+        	});
+        	
+        	$(".denyBtn").on("click", function(){
+        		let requestId = $(this).data("id");
+        		let state = "거절";
+        		
+        		$.ajax({
+        			type:"put"
+        			, url:"/joinrequest/deny"
+        			, data:{"joinrequestId":requestId, "state":state}
+        			, success:function(response){
+        				if(response.result=="success"){
+        					// 신청 수락 거절 이후, 그 요청을 모달 창에서 삭제하고 싶은뎅,,,
+        					// 새로운 리스트를 받아서 다시 띄우는게 맞을듯
+        				} else {
+        					alert("신청 수락 실패");
+        				}
+        			}
+        			, error:function(){
+        				alert("신청 수락 거절 중 에러 발생");
+        			}
+        		});
+        	});
+        
         	$("#commentBtn").on("click", function(){
         		let contents = $("#contentsInput").val();
         		let postId = $(this).data("post-id")
@@ -149,7 +233,7 @@
         			, success:function(response){
         				if(response.result=="success"){
         					alert("신청 성공");
-        					$("#applyModal").modal("hide"); // 모달 닫기
+        					$("#requestModal").modal("hide"); // 모달 닫기
         					// 요청을 보낸 이후, currentNumber 값이 오르는지 확인하려면, 이 게시글 디테일 페이지를 다시 로드해야해, 
         					// 아 생각해보니, 바로 오르면 안되네, 마이페이지에서 승인하는거니까, 
         					// 당장 모달창만 닫는게 맞는듯, 

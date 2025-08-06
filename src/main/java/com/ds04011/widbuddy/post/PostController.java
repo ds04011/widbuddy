@@ -15,34 +15,28 @@ import com.ds04011.widbuddy.category.service.CategoryService;
 import com.ds04011.widbuddy.comment.dto.CommentDto;
 import com.ds04011.widbuddy.comment.service.CommentService;
 import com.ds04011.widbuddy.joinflag.Service.JoinflagService;
+import com.ds04011.widbuddy.joinrequest.dto.JoinrequestDto;
+import com.ds04011.widbuddy.joinrequest.service.JoinrequestService;
 import com.ds04011.widbuddy.post.domain.Post;
 import com.ds04011.widbuddy.post.dto.PostDto;
 import com.ds04011.widbuddy.post.dto.PostDtoAssembler;
 import com.ds04011.widbuddy.post.service.PostService;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/post/view")
+@RequiredArgsConstructor
 public class PostController {
 	
-	private JoinflagService joinflagService;
-	private CategoryDtoAssembler categoryDtoAssembler;
-	private PostDtoAssembler postDtoAssembler;
-	private PostService postService;
-	private CommentService commentService;
-	private CategoryService categoryService;
-	public PostController(PostService postService
-			, CommentService commentService
-			, CategoryService categoryService
-			, PostDtoAssembler postDtoAssembler
-			, CategoryDtoAssembler categoryDtoAssembler
-			, JoinflagService joinflagService) {
-		this.postService = postService;
-		this.commentService = commentService;
-		this.categoryService = categoryService;
-		this.postDtoAssembler = postDtoAssembler;
-		this.categoryDtoAssembler = categoryDtoAssembler;
-		this.joinflagService = joinflagService;
-	}
+	private final JoinflagService joinflagService;
+	private final JoinrequestService joinrequestService;
+	private final CategoryDtoAssembler categoryDtoAssembler;
+	private final PostDtoAssembler postDtoAssembler;
+	private final PostService postService;
+	private final CommentService commentService;
+	private final CategoryService categoryService;
+	
 	
 	@GetMapping("/mainpage")
 	public String mainpage(Model model) {
@@ -83,7 +77,10 @@ public class PostController {
 	
 	@GetMapping("/detail")
 	public String postDetail(@RequestParam("postId") long postId
-			, Model model) {
+			, Model model
+			) {
+		
+		
 		
 		Post post = postService.getPostById(postId);
 		PostDto pd = postDtoAssembler.toDto(post);
@@ -96,6 +93,11 @@ public class PostController {
 		//joinflag Id 를 여기서 실어주자? dto 로 하는게 맞다? 컨트롤러로 받아서 서비스에서 처리하는 메서드가 맞다?
 		long joinflagId = joinflagService.callJoinflagId(postId);
 		model.addAttribute("joinflagId", joinflagId);
+		
+		// 여기서 해당 flag 에 대응하는 request 들 dto 로 짜서 보내줘
+		// 그럼 그걸 모달에서 쭉 띄워줄꺼야. 
+		List<JoinrequestDto> jdList = joinrequestService.findByJoinflagId(joinflagId);
+		model.addAttribute("requestList", jdList);
 		
 		
 		return "post/postdetail";

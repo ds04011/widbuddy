@@ -10,4 +10,6 @@ public interface JoinrequestRepository extends JpaRepository<Joinrequest, Long>{
 
 	public List<Joinrequest> findByUserId(long userId);
 	
+	public List<Joinrequest> findByJoinFlagId(long joinflagId);
+	
 }

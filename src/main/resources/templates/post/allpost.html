@@ -24,13 +24,23 @@
         				</tr>
         			</thead>
         			<tbody>
-	        			<tr>
-	        				<td>1.</td>
-	        				<td>ds04011</td>
-	        				<td>테스트제목</td>
-	        				<td>등산</td>
-	        				<td>11.11.11</td>
-	        				<td>모집시행시, 깃발아이콘 + 숫자</td>
+	        			<tr th:each="post : ${postList}">
+	        				<td th:text="${post.id}">게시글 번호 1.</td>
+	        				<td th:text="${post.userName}">ds04011</td>
+	        				<td><a th:href="|/post/view/detail?postId=${post.id}|" th:text="${post.title}" class="category-link">등산</a></td>
+	        				<td th:text="${post.categoryName}">등산</td>
+	        				<td th:text="${#temporals.format(post.createdAt, 'yyyy, M, d, a h시 m분') }">11.11.11</td>
+	        				<td>
+	        					<span th:if="${post.headcount !=0 }">
+		        						<i class="bi bi-flag-fill"></i>
+		        						<span th:classappend="${post.currentNumber == post.headcount} ? 'text-success'" 
+      										th:text="${post.currentNumber + ' / ' + post.headcount}">0 / 5</span>
+		        					</span>
+		        					
+		        					<span th:if="${post.headcount == 0 }">
+		        						
+		        					</span>
+	        				</td>
 	        			</tr>
 	        			
         			</tbody>
