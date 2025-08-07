@@ -6,7 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.ds04011.widbuddy.category.domain.Category;
+import com.ds04011.widbuddy.category.dto.CategoryDto;
+import com.ds04011.widbuddy.category.dto.CategoryDtoAssembler;
 import com.ds04011.widbuddy.category.service.CategoryService;
+import com.ds04011.widbuddy.interest.service.InterestService;
 import com.ds04011.widbuddy.joinflag.Service.JoinflagService;
 import com.ds04011.widbuddy.joinflag.domain.Joinflag;
 import com.ds04011.widbuddy.joinrequest.domain.Joinrequest;
@@ -23,8 +27,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MypageController {
 	
-	
+	private final InterestService interestService;
 	private final CategoryService categoryService; // 필요한가? ㅇㅇ 관심 태그 달린거 가져와야
+	private final CategoryDtoAssembler categoryDtoAssembler;
 	private final JoinrequestService joinrequestService; 
 	private final JoinflagService joinflagService;
 	private final PostDtoAssembler postDtoAssembler;
@@ -39,17 +44,20 @@ public class MypageController {
 		
 		long userId = (Long) session.getAttribute("userId");
 		
-		// post, 관심category,  comment , hashtag , joinrequest, joinflag, 모두가 담겨서 보내져야 함. 
+		//  hashtag 모두가 담겨서 보내져야 함. 
 		List<Post> postList = postService.getPostsByUserId(userId);
 		List<PostDto> postDtoList = postDtoAssembler.toDtoList(postList);
 		model.addAttribute("postList", postDtoList);
 		
+		List<Category> cateList = interestService.cateListByUserId(userId);
+		List<CategoryDto> cateDtoList = categoryDtoAssembler.toCateDtoList(cateList, userId);
+		model.addAttribute("categoryList", cateDtoList);
 		
 		
-//		List<Joinrequest> requestList = joinrequestService.findByUserId(userId);
-//		model.addAttribute("requestList", requestList);
-//		List<Joinflag> flagList =  joinflagService.findByUserId(userId);
-//		model.addAttribute("flagList", flagList);
+		List<Joinrequest> requestList = joinrequestService.findByUserId(userId);
+		model.addAttribute("requestList", requestList);
+		List<Joinflag> flagList =  joinflagService.findByUserId(userId);
+		model.addAttribute("flagList", flagList);
 		
 		
 		

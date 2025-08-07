@@ -49,7 +49,8 @@
 			  <button type="button"
 			          th:if="${session.userId == post.userId}"
 			          class="btn btn-primary btn-sm ms-2 ml-5"
-			          data-toggle="modal" data-target="#flagModal">
+			          data-toggle="modal" data-target="#flagModal"
+			          id="">
 			    신청 현황
 			  </button>
 			  
@@ -158,6 +159,7 @@
         <script layout:fragment="script">
         
         	$(".acceptBtn").on("click", function(){
+        		let $row = $(this).closest(".d-flex");
         		let requestId = $(this).data("id");
         		let state = "수락";
         		
@@ -167,18 +169,23 @@
         			, data:{"joinrequestId":requestId, "state":state}
         			, success:function(response){
         				if(response.result=="success"){
-        					
+        					$row.addClass("request-accepted");
+        	                $row.find("button").prop("disabled", true);
+        	                if ($row.find(".status-label").length === 0) {
+        	                    $row.append('<span class="text-success status-label">수락됨</span>');
+        	                }
         				} else {
         					alert("신청 수락 실패");
         				}
         			}
         			, error:function(){
-        				alert("신청 수락 거절 중 에러 발생");
+        				alert("신청 수락  중 에러 발생");
         			}
         		});
         	});
         	
         	$(".denyBtn").on("click", function(){
+        		let $row = $(this).closest(".d-flex");
         		let requestId = $(this).data("id");
         		let state = "거절";
         		
@@ -188,14 +195,17 @@
         			, data:{"joinrequestId":requestId, "state":state}
         			, success:function(response){
         				if(response.result=="success"){
-        					// 신청 수락 거절 이후, 그 요청을 모달 창에서 삭제하고 싶은뎅,,,
-        					// 새로운 리스트를 받아서 다시 띄우는게 맞을듯
+        					$row.addClass("request-denied");
+        	                $row.find("button").prop("disabled", true);
+        	                if ($row.find(".status-label").length === 0) {
+        	                    $row.append('<span class="text-danger status-label">거절됨</span>');
+        	                }
         				} else {
-        					alert("신청 수락 실패");
+        					alert("신청 거절 실패");
         				}
         			}
         			, error:function(){
-        				alert("신청 수락 거절 중 에러 발생");
+        				alert("신청  거절 중 에러 발생");
         			}
         		});
         	});

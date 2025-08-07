@@ -2,6 +2,7 @@ package com.ds04011.widbuddy.joinrequest.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -71,5 +72,20 @@ public class JoinrequestService {
 		return requestDtoList;
 	}
 	
+	public Joinrequest findById(long joinrequestId) {
+		Optional<Joinrequest> oprequest = joinrequestRepository.findById(joinrequestId);
+		Joinrequest request = oprequest.orElse(null);
+		return request;
+	}
+	
+	public boolean saveRequest(Joinrequest request) {
+		
+		try {
+			joinrequestRepository.save(request);
+		} catch(PersistenceException e) {
+			return false;
+		}
+		return true;	
+	}
 	
 }

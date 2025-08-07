@@ -1,9 +1,13 @@
 package com.ds04011.widbuddy.interest.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.ds04011.widbuddy.category.domain.Category;
+import com.ds04011.widbuddy.category.service.CategoryService;
 import com.ds04011.widbuddy.interest.domain.Interest;
 import com.ds04011.widbuddy.interest.repository.InterestRepository;
 
@@ -14,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InterestService {
 
+	private final CategoryService categoryService ;
 	private final InterestRepository interestRepository;
 	
 	public boolean addInterest(long userId, long categoryId) {
@@ -56,5 +61,16 @@ public class InterestService {
 	public int countByCategoryId(long categoryId) {
 		return interestRepository.countByCategoryId(categoryId);
 	}
+	
+	public List<Category> cateListByUserId(long userId){
+		List<Category> cateList = new ArrayList<>();
+		List<Interest> interList = interestRepository.findByUserId(userId);
+		for(Interest i : interList) {
+			 Category cate = categoryService.getCategoryById(i.getCategoryId());
+			 cateList.add(cate);
+		}
+		return cateList;
+	}
+	
 	
 }
