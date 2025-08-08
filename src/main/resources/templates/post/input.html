@@ -20,12 +20,25 @@
 		        </div>
 		        <input type="hidden" id="categoryIdInput" th:value="${categoryId}">
 		        
+		        
+		        <!-- 
+		        	해시태그 생성 구역 
+		         -->
+		         
+		        <div class="my-3">
+		        	<h5>해시태그 입력 </h5>
+		        	<input name="tags" class="tag-input" placeholder="해시태그 입력 (# 없이 입력)" />
+		        	
+		        </div>
+		        
+		        
+		        
 		        <!--  우선 토글을 통해서 
 		        	인풋창을 보이기 안보이기 를 조절해보자 -->
 		        
 		        <div class="joinflagInput">
 		        
-		        	<button type="button" class="btn btn-sm btn-primary" onclick="toggleInput()">입력창 토글</button>
+		        	<button type="button" class="btn btn-sm btn-primary" onclick="toggleInput()">모집활성화</button>
 		        	
 		        	<div id="toggleInputDiv" class="mt-2" style="display: none;">
 					    <input type="number" class="form-control" id="headcountInput" placeholder="인원수를 입력해주세요." value="0" min="0">
@@ -44,6 +57,21 @@
         
         
         <script layout:fragment="script">
+        
+	        const input = document.querySelector('input[name=tags]');
+	        const tagify = new Tagify(input, {
+	          whitelist: ["Spring", "Java", "JPA", "React"],
+	          maxTags: 10,
+	          dropdown: {
+	            enabled: 1,
+	            position: "text",
+	            classname: "custom-dropdown"
+	          }
+	        });
+
+        
+        
+        
 	        function toggleInput() {
 	            const inputDiv = document.getElementById("toggleInputDiv");
 	            const input = document.getElementById("headcountInput");

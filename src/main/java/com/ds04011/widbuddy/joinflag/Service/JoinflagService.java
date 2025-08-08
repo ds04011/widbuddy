@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ds04011.widbuddy.joinflag.domain.Joinflag;
 import com.ds04011.widbuddy.joinflag.repository.JoinflagRepository;
+import com.ds04011.widbuddy.joinrequest.domain.Joinrequest;
 import com.ds04011.widbuddy.post.domain.Post;
 
 import jakarta.persistence.PersistenceException;
@@ -32,6 +33,12 @@ public class JoinflagService {
 			return false;
 		}
 		return true;
+	}
+	
+	public Joinflag findById(long id) {
+		Optional<Joinflag> opflag = joinflagRepository.findById(id);
+		Joinflag flag = opflag.orElse(null);
+		return flag;
 	}
 	
 	public int callHeadcount(long postId) {
@@ -86,5 +93,15 @@ public class JoinflagService {
 			return post;
 		}
 	}
+	
+	public boolean saveFlag(Joinflag flag) {
+			
+			try {
+				joinflagRepository.save(flag);
+			} catch(PersistenceException e) {
+				return false;
+			}
+			return true;	
+		}
 
 }
