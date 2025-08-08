@@ -2,10 +2,7 @@ package com.ds04011.widbuddy.joinrequest.dto;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import com.ds04011.widbuddy.post.dto.PostDto;
+import com.ds04011.widbuddy.post.domain.Post;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,12 +18,16 @@ public class JoinrequestDto {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
+	
 	private long joinFlagId;
 	private long userId;
 	private String description;
 	private String state;
 	private String userName;
-
+	
+	private String title;
+	private long postId;
+	
 	private LocalDateTime createdAt;
 
 

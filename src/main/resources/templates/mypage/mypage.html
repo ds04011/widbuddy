@@ -7,14 +7,57 @@
         
         <section layout:fragment="contents">
         
-        	<div class="d-flex justify-content-between">
+        	<div class="d-flex justify-content-around">
         		
-        		<div>
-        			<!-- post , comment, 관심 category, 등  -->
+        		<div class="col-5">
+        			<!-- post , , 관심 category, 등  -->
+        			<h5 class="mt-5 ml-3">나의 글 리스트</h5>
+        			<table class="table">
+        				<tr th:each="post : ${postList}">
+        					<td th:text="${post.id}">게시글 번호 1.</td>
+        					<td><a th:href="|/post/view/detail?postId=${post.id}|" th:text="${post.title}" class="category-link">등산</a></td>
+        					<td th:text="${#temporals.format(post.createdAt, 'yyyy, M, d, a h시 m분') }">11.11.11</td>
+        				</tr>
+        			</table>
+        			
+        			<h5 class="mt-5 ml-3">관심 카테고리</h5>
+        			<table class="table">
+        				<tr th:each="category : ${categoryList}">
+        					<td><a th:href="|/category/view/allpost?categoryId=${category.id}|" th:text="${category.name}" class="category-link">등산</a></td>
+        				</tr>
+        			</table>
         		</div>
         		
-        		<div>
+        		<div class="col-5">
         			<!-- joinrequest, joinflag 등을 보여주고, 수락 , 거절 등의 버튼이 위치해야함. -->
+        			<h5 class="mt-5 ml-3">나의 모집</h5>
+        			<table class="table">
+        				<tr>
+        					<th>게시글</th>
+        					<th>현재 인원</th>
+        					<th>총 모집수</th>
+        				</tr>
+        				<tr th:each="flag : ${flagList}">
+        					<td ><a th:href="|/post/view/detail?postId=${flag.post.id}|" th:text="${flag.post.title}" class="category-link">등산</a></td>
+        					<td th:text="${flag.currentNumber}">현재 인원</td>
+        					<td th:text="${flag.headcount}">총 모집인원</td>
+        				</tr>
+        			</table>
+        			
+        			<h5 class="mt-5 ml-3">나의 신청</h5>
+        			<table class="table">
+        				<tr>
+        					<th>게시글</th>
+        					<th>요청 상태</th>
+        					<th>내 메시지</th>
+        				</tr>
+        				<tr th:each="request : ${requestList}">
+        					<td ><a th:href="|/post/view/detail?postId=${request.postId}|" th:text="${request.title}" class="category-link">등산</a></td>
+        					<td th:text="${request.state}"></td>
+        					<td th:text="${request.description}"></td>
+        				</tr>
+        			</table>
+        			
         		</div>
         	
         	</div>

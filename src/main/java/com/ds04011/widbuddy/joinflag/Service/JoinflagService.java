@@ -75,5 +75,16 @@ public class JoinflagService {
 		List<Joinflag> flagList = joinflagRepository.findByUserId(userId);
 		return flagList;
 	}
+	
+	public Post findPostById(long joinflagId) {
+		Optional<Joinflag> opflag = joinflagRepository.findById(joinflagId);
+		Joinflag flag = opflag.orElse(null);
+		if(flag == null) {
+			return null;
+		} else {
+			Post post = flag.getPost();
+			return post;
+		}
+	}
 
 }

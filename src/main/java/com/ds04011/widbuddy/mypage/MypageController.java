@@ -14,6 +14,7 @@ import com.ds04011.widbuddy.interest.service.InterestService;
 import com.ds04011.widbuddy.joinflag.Service.JoinflagService;
 import com.ds04011.widbuddy.joinflag.domain.Joinflag;
 import com.ds04011.widbuddy.joinrequest.domain.Joinrequest;
+import com.ds04011.widbuddy.joinrequest.dto.JoinrequestDto;
 import com.ds04011.widbuddy.joinrequest.service.JoinrequestService;
 import com.ds04011.widbuddy.post.domain.Post;
 import com.ds04011.widbuddy.post.dto.PostDto;
@@ -53,9 +54,12 @@ public class MypageController {
 		List<CategoryDto> cateDtoList = categoryDtoAssembler.toCateDtoList(cateList, userId);
 		model.addAttribute("categoryList", cateDtoList);
 		
-		
-		List<Joinrequest> requestList = joinrequestService.findByUserId(userId);
+		// 어느 게시글에, 신청을 넣은건지는 나와야지 
+		List<Joinrequest> requestlist = joinrequestService.findByUserId(userId);
+		List<JoinrequestDto> requestList = joinrequestService.requestDtoList(requestlist);
 		model.addAttribute("requestList", requestList);
+		
+		
 		List<Joinflag> flagList =  joinflagService.findByUserId(userId);
 		model.addAttribute("flagList", flagList);
 		
