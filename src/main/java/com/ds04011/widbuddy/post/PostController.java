@@ -54,7 +54,7 @@ public class PostController {
 		
 		model.addAttribute("postList", postDtoList);
 		model.addAttribute("categoryList", categoryDtoList);
-		
+		// sjpoint 
 		return "post/mainpage";  
 	}
 		
