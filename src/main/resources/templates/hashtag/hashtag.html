@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko" 
+    xmlns:th="http://www.thymeleaf.org" 
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/mainpagedefault}">
+        
+        
+        <section layout:fragment="contents">
+        
+        
+        	
+        <div class="hashtags my-5">
+		    <ul>
+		        <th:block th:each="tag : ${hashtags}">
+		            <li th:text="${tag.tag}">#태그</li>
+		        </th:block>
+		    </ul>
+		</div>
+        
+        
+        </section>
+        
+        
+        
+        <script layout:fragment="script">
+        
+        </script>
+        
+</html>

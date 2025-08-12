@@ -14,6 +14,8 @@ import com.ds04011.widbuddy.category.dto.CategoryDtoAssembler;
 import com.ds04011.widbuddy.category.service.CategoryService;
 import com.ds04011.widbuddy.comment.dto.CommentDto;
 import com.ds04011.widbuddy.comment.service.CommentService;
+import com.ds04011.widbuddy.hashtag.domain.Hashtag;
+import com.ds04011.widbuddy.hashtag.service.HashtagService;
 import com.ds04011.widbuddy.joinflag.Service.JoinflagService;
 import com.ds04011.widbuddy.joinrequest.dto.JoinrequestDto;
 import com.ds04011.widbuddy.joinrequest.service.JoinrequestService;
@@ -36,6 +38,7 @@ public class PostController {
 	private final PostService postService;
 	private final CommentService commentService;
 	private final CategoryService categoryService;
+	private final HashtagService hashtagService;
 	
 	
 	@GetMapping("/mainpage")
@@ -99,6 +102,9 @@ public class PostController {
 		List<JoinrequestDto> jdList = joinrequestService.findByJoinflagId(joinflagId);
 		model.addAttribute("requestList", jdList);
 		
+		List<Hashtag> hashtagList = hashtagService.findByPostId(postId);
+		model.addAttribute("hashtags", hashtagList);
+
 		
 		return "post/postdetail";
 		

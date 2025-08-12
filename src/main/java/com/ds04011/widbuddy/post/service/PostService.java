@@ -5,6 +5,10 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.ds04011.widbuddy.hashtag.domain.Hashtag;
+import com.ds04011.widbuddy.hashtag.repository.HashtagRepository;
+import com.ds04011.widbuddy.hashtagmap.domain.HashtagMap;
+import com.ds04011.widbuddy.hashtagmap.repository.HashtagMapRepository;
 import com.ds04011.widbuddy.joinflag.Service.JoinflagService;
 import com.ds04011.widbuddy.post.domain.Post;
 import com.ds04011.widbuddy.post.repository.PostRepository;
@@ -17,17 +21,24 @@ public class PostService {
 
 	private PostRepository postRepository;
 	private JoinflagService joinflagService;
+	private HashtagRepository hashtagRepository;
+	private HashtagMapRepository hashtagMapRepository;
+	
 	
 	public PostService(PostRepository postRepository
 			, JoinflagService joinflagService
+			, HashtagRepository hashtagRepository
+			, HashtagMapRepository hashtagMapRepository
 			) {
 		this.postRepository = postRepository;
 		this.joinflagService = joinflagService;
+		this.hashtagRepository = hashtagRepository;
+		this.hashtagMapRepository = hashtagMapRepository;
 		
 	}
 	
 	public boolean addPost(long userId, String title, String contents, long categoryId, String imagePath
-			, int headcount) {
+			, int headcount , List<String> tags) {
 								
 		// 1. post 생성.
 		Post post = Post.builder().userId(userId).title(title)
@@ -44,6 +55,20 @@ public class PostService {
 			if(headcount !=0) {
 				joinflagService.addJoinflag(userId, genPost, headcount);
 			}
+			
+			if (tags != null && !tags.isEmpty()) {
+		        for (String tagName : tags) {
+		        	Hashtag hashtag = hashtagRepository.findByTag(tagName)
+		        			.orElseGet(() -> hashtagRepository.save(new Hashtag(tagName)));
+
+
+		            HashtagMap map = new HashtagMap();
+		            map.setPostId(genPost.getId());
+		            map.setHashtagId(hashtag.getId());
+		            hashtagMapRepository.save(map);
+		        }
+		    }
+
 			
 			
 		} catch(PersistenceException e) {

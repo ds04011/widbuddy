@@ -33,6 +33,15 @@
 	        			삭제는 나중에 고민해보자.  	 -->
 	        <hr>
     	</div>
+    	<div class="hashtags">
+		    <ul>
+		        <th:block th:each="tag : ${hashtags}">
+		            <li th:text="${tag.tag}">#태그</li>
+		        </th:block>
+		    </ul>
+		</div>
+		<hr>
+    	
         
         <div th:if="${post.headcount != 0}" class="text-center my-3">
         	<i class="bi bi-flag-fill"></i>

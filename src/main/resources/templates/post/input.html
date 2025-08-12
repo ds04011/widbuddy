@@ -132,15 +132,19 @@
 	        	let categoryId = $("#categoryIdInput").val();
 	        	let headcount = $("#headcountInput").val();
 	        	
+	        	let tags = tagify.value.map(tag => tag.value); // ["Spring", "Java", ...]
+	
+	        	
 	        	$.ajax({
 	        		type:"post"
 	        		, url:"/post/create"
 	        		, data:{"title":title, "contents":contents, "categoryId":categoryId, "imagePath": uploadedImageUrl
-	        			, "headcount":headcount}
+	        			, "headcount":headcount, "tags": tags}
+	        		,traditional: true
 	        		, success:function(response){
 	        			if(response.result=="success"){
 	        				location.href="/category/view/allpost?categoryId="+categoryId;
- 			//	location.href = "/post/view/" + response.postId; 포스트아이디 같이 보내는법
+ 			
 	        			} else {
 	        				alert("글 저장 실패");
 	        			}

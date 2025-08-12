@@ -1,6 +1,7 @@
 package com.ds04011.widbuddy.post;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ds04011.widbuddy.common.FileManager;
 import com.ds04011.widbuddy.joinflag.Service.JoinflagService;
-import com.ds04011.widbuddy.post.domain.Post;
 import com.ds04011.widbuddy.post.service.PostService;
 
 import jakarta.servlet.http.HttpSession;
@@ -37,13 +37,14 @@ public class PostRestController {
 			// 서머노트는 이미지를 올리는 메서드가 별도로 필요하대, 
 			// 이미 저장은 끝났고, imagePath 만 받아와서 post  의 컬럼 값으로 저장이 되면 되니까, String 으로 받아오자. 
 			, HttpSession session
-			, @RequestParam("headcount") int headcount) {
+			, @RequestParam("headcount") int headcount
+			, @RequestParam(value = "tags", required = false) List<String> tags) {
 		
 		long userId = (Long)session.getAttribute("userId");
 		Map<String, String> resultMap = new HashMap<>();
 		
 		
-		if(postService.addPost(userId, title, contents, categoryId, imagePath, headcount)) { // imagePath 추가
+		if(postService.addPost(userId, title, contents, categoryId, imagePath, headcount, tags)) { 
 			resultMap.put("result",  "success");
 		} else {
 			resultMap.put("result", "fail");
